@@ -6,20 +6,6 @@ from urllib.parse import quote
 
 import validator_collection
 
-re_num = r"\d+\.?\d*"
-re_sizetag = re.compile(
-    r"""(?:.*)(?: )  # a name, then a space
-    (
-    \[(?:  # a [, then either
-        [⅛¼⅜½⅝¾⅞].*  # a fraction then a unit
-        |\d{1,3}(?:,\d{1,3})?(?:(?:\.\d+)?|⅛¼⅜½⅝¾⅞)?.*  # a number then a unit
-        |∞  # or infinity
-        |0  # or zero
-    )
-    (?:, .*)?  # maybe a species
-    \]  # and finally a ]
-    )""", re.VERBOSE)
-
 
 def clamp(minVal, val, maxVal):
     """Clamp a `val` to be no lower than `minVal`, and no higher than `maxVal`."""
@@ -116,13 +102,6 @@ def chunkStr(s, chunklen, prefix="", suffix=""):
         yield prefix + chunk + suffix
 
 
-def chunkMsg(m) -> list:
-    p = "```\n"
-    if m.startswith("Traceback") or m.startswith("eval error") or m.startswith("Executing eval"):
-        p = "```python\n"
-    return chunkStr(m, chunklen=2000, prefix=p, suffix="\n```")
-
-
 def chunkLines(s, chunklen):
     """Split a string into groups of lines that don't go over the chunklen. Individual lines longer the chunklen will be split"""
     lines = s.split("\n")
@@ -141,12 +120,6 @@ def chunkLines(s, chunklen):
             linesout = []
     if linesout:
         yield "\n".join(linesout)
-
-
-def removeBrackets(s) -> str:
-    """Remove all [] and <>s from a string."""
-    s = re.sub(r"[\[\]<>]", "", s)
-    return s
 
 
 def formatTraceback(err) -> str:
@@ -190,16 +163,6 @@ def getFullname(o):
     return fullname
 
 
-def formatError(err) -> str:
-    fullname = getFullname(err)
-
-    errMessage = str(err)
-    if errMessage:
-        errMessage = f": {errMessage}"
-
-    return f"{fullname}{errMessage}"
-
-
 def tryOrNone(fn, *args, ignore=(), **kwargs):
     "Try to run a function. If it throws an error that's in `ignore`, just return `None`."""
     try:
@@ -231,10 +194,6 @@ class iset(set):
         return super().remove(item)
 
 
-def strHelp(topic) -> str:
-    return pydoc.plain(pydoc.render_doc(topic))
-
-
 def minmax(first, second) -> tuple:
     """Return a tuple where item 0 is the smaller value, and item 1 is the larger value."""
     small, big = first, second
@@ -243,66 +202,12 @@ def minmax(first, second) -> tuple:
     return small, big
 
 
-def removeCodeBlock(s) -> str:
-    re_codeblock = re.compile(r"^\s*```(?:python)?(.*)```\s*$", re.DOTALL)
-    s_nocodeblock = re.sub(re_codeblock, r"\1", s)
-    if s_nocodeblock != s:
-        return s_nocodeblock
-
-    re_miniblock = re.compile(r"^\s*`(.*)`\s*$", re.DOTALL)
-    s_nominiblock = re.sub(re_miniblock, r"\1", s)
-    if s_nominiblock != s:
-        return s_nominiblock
-
-    return s
-
-
-def hasSizeTag(s) -> bool:
-    """Return `True` if the string has a sizetag."""
-    return re_sizetag.search(s) is not None
-
-
-def stripSizeTag(s) -> str:
-    """Remove a sizetag from a string that has one."""
-    if hasSizeTag(s):
-        re_sizetagloose = re.compile(r"^(.*) \[.*\]$", re.DOTALL)
-        s_sizetagloose = re.sub(re_sizetagloose, r"\1", s)
-        return s_sizetagloose
-    return s
-
-
-def intToRoman(input) -> str:
-    """Convert an integer to a Roman numeral."""
-
-    if not isinstance(input, type(1)):
-        raise TypeError("expected integer, got %s" % type(input))
-    if not 0 < input < 4000:
-        raise ValueError("Argument must be between 1 and 3999")
-    ints = (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    nums = ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I')
-    result = []
-    for i in range(len(ints)):
-        count = int(input / ints[i])
-        result.append(nums[i] * count)
-        input -= ints[i] * count
-    return ''.join(result)
-
-
 def findOne(iterator):
     try:
         val = next(iterator)
     except StopIteration:
         val = None
     return val
-
-
-async def parseMany(ctx, arg, types: list, default = None):
-    for t in types:
-        try:
-            return await t.convert(ctx, arg)
-        except Exception:
-            pass
-    return default
 
 
 def isURL(value) -> bool:
@@ -380,11 +285,6 @@ def regexbuild(li: list, capture = False) -> str:
     if capture:
         returnstring = f"({returnstring})"
     return returnstring
-
-
-def url_safe(s) -> str:
-    """Makes a string URL safe, and replaces spaces with hyphens."""
-    return quote(s, safe=" ").replace(" ", "-")
 
 
 def truncate(s, amount) -> str:
