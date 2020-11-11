@@ -9,8 +9,10 @@ logger.handlers = []
 logger.propagate = False
 logger.addHandler(dfhandler)
 
+
 def main():
     logger.info("Welcome to the poopview!")
+
 
 if __name__ == "__main__":
     main()

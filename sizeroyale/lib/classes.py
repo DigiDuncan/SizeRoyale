@@ -1,9 +1,9 @@
-from decimal import Decimal
 from typing import Tuple, Union
 
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.units import SV
 from sizeroyale.lib.utils import isURL
+
 
 class Royale:
     def __init__(self, file, *, minsize, maxsize):
@@ -17,7 +17,7 @@ class Royale:
 
         self.players = self.parser.players
         self.arenas = self.parser.arenas
-    
+
         self._bloodbaths = self.parser.bloodbaths
         self._dayevents = self.parser.dayevents
         self._nightevents = self.parser.nightevents
@@ -41,6 +41,7 @@ class Royale:
     def next(self) -> Tuple[str, Union(str, None)]:
         raise NotImplementedError
 
+
 class Parser:
     def __init__(self, lines):
         self.players = []
@@ -60,11 +61,13 @@ class Parser:
     def _parse_line(self, line):
         raise NotImplementedError
 
+
 class Arena:
     def __init__(self, name: str, description: str, events: list):
         self.name = name
         self.description = description
         self.events = events
+
 
 class Event:
     def __init__(self, text: str, tributes: int, *, sizes, elims, perps, gives, removes, rarity):
@@ -76,6 +79,7 @@ class Event:
         self.gives = None if gives is None else gives
         self.removes = None if removes is None else removes
         self.rarity = 1 if rarity is None else rarity
+
 
 class Player:
     def __init__(self, name, team, gender, height, url):

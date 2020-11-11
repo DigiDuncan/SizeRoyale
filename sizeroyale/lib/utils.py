@@ -1,8 +1,6 @@
 import inspect
-import pydoc
 import re
 import traceback
-from urllib.parse import quote
 
 import validator_collection
 
