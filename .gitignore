@@ -11,9 +11,3 @@
 # Visual Studio Code
 .vscode
 *.code-workspace
-
-# Data files
-text/hexstring.txt
-text/ids.txt
-text/winkcount.txt
-sizebot.egg-info
