@@ -7,7 +7,11 @@ from sizeroyale.lib.utils import isURL
 
 
 class ParseError(Exception):
-    pass
+    def __init__(self, *args):
+        if args:
+            self.message = args[0]
+        else:
+            self.message = None
 
 
 class Royale:
@@ -129,7 +133,7 @@ class MetaParser:
         try:
             _ = self.t.valid_data
         except AttributeError:
-            raise ParseError
+            raise ParseError(f"Type {self.t} does not define valid metadata.")
 
         returndict = {}
         itemsdict = {}
@@ -138,10 +142,22 @@ class MetaParser:
         for item in items:
             item = item.strip()
             kv = [item.split(":", 1)]
-            itemsdict[kv[0]] = kv[1]
+            try:
+                itemsdict[kv[0]] = kv[1]
+            except IndexError:
+                raise ParseError(f"Metatag {kv[0]} has no value.")
+        for k, v in itemsdict:
+            if k in ["size", "give", "remove"]:
+                kv2 = [v.split(":", 1)]
+                try:
+                    v = AttrDict({kv2[0]: kv2[1]})
+                except IndexError:
+                    raise ParseError(f"Metatag {kv2[0]} has no value.")
 
         for key in self.t.valid_data:
             if key in items:
                 returndict[key] = itemsdict[key]
             else:
                 returndict[key] = None
+
+        return AttrDict(returndict)
