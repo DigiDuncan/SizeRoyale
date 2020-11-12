@@ -14,7 +14,7 @@
 # Scenarios are denoted by quoted strings contained under valid headers, one a single line.
 # They accept some formatting codes:
 # * %n% denotes a player of number n. All intergers between 1 and the number of tributes specified
-# in the metadata (see below) must be present in the string, and no numbers outside that range
+# in the metadata (up to 9, see below) must be present in the string, and no numbers outside that range
 # may exist.
 # * %n:>size% denotes a player larger than or equal to size. e.g.: %1>10ft%. (also available is <).
 # * %n:A% -> %n:Z% denotes a player on a team. This ensures the matched players are on a shared
@@ -25,12 +25,12 @@
 # be all lowercase , with underscores instead of spaces.
 # * %p:n% is replaced by player n's third-person pronouns (he, she, they) e.g.: %p:1%
 # * %p:ns% is replaced by player n's possesive pronouns (his, hers, their) e.g.: %p:1s%
-# * %p:nself% is replaced by player n's self pronouns (himself, herself, thierself) e.g.: %p:1self%
+# * %p:nself% is replaced by player n's self pronouns (himself, herself, theirself) e.g.: %p:1self%
 # * Replacing p with P will capitalize the pronoun.
 
 # The line under a scenario should contain metadata about that scenario.
 # All metadata is optional, except for tributes, which must be a valid integer higher than 0.
-# * tributes:n denotes how many tributes are involved in this scenario.
+# * tributes:n denotes how many tributes are involved in this scenario. (up to 9)
 # * size:n:i changes player n's size by i amount. i can be any difference string, e.g.: 2x, /2,
 # +1ft, -6in, 50%, etc.
 # * elim:n eliminates player n.
@@ -59,6 +59,9 @@
 # A player elims if they are shrunk beyond 1mm, grow beyond 4 miles, or are eliminated manually.
 
 [setup]
+autoelim:True, minsize:1mm, maxsize:4mi, deathrate:10
+
+[players]
 "DigiDuncan"
 team:1, gender:M, size:5ft7.5in, url:www.com/fingertits.png
 "Kelly"
@@ -101,7 +104,7 @@ tributes:1, elim:2, perp:1
 tributes:1
 
 [arena]
-<real kelly> "A Giga-sized Kelly rolls over in her sleep and drools into the arena."
+<Real Kelly> "A Giga-sized Kelly rolls over in her sleep and drools into the arena."
 "%1% avoids getting swept away."
 tributes:1
 
