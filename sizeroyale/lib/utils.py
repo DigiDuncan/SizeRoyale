@@ -290,3 +290,11 @@ def truncate(s, amount) -> str:
     if len(s) > amount:
         return s[:amount - 3] + "..."
     return s
+
+
+def hasattr(obj, key):
+    try:
+        obj.__getattr__(key)
+        return True
+    except AttributeError:
+        return False

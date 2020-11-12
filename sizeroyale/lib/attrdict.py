@@ -1,11 +1,3 @@
-def hasattr(self, key):
-    try:
-        object.__getattr__(key)
-        return True
-    except AttributeError:
-        return False
-
-
 class AttrDict:
     __slots__ = ["_values"]
 
