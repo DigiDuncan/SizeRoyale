@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Tuple, Union
 
 from sizeroyale.lib.attrdict import AttrDict
@@ -6,14 +7,17 @@ from sizeroyale.lib.utils import isURL
 
 
 class Royale:
-    def __init__(self, file, *, minsize, maxsize):
+    def __init__(self, file):
         self._file = file
-        self.minsize = SV.parse("1mm") if minsize is None else SV.parse(minsize)
-        self.maxsize = SV.parse("4mi") if maxsize is None else SV.parse(maxsize)
 
         with open(self._file) as f:
             lines = f.readlines()
             self.parser = Parser(lines)
+
+        self.minsize = SV.parse("1mm") if self.parser.minsize is None else SV.parse(self.parser.minsize)
+        self.maxsize = SV.parse("4mi") if self.parser.maxsize is None else SV.parse(self.parser.maxsize)
+        self.autoelim = True if self.parser.maxsize is None else self.parser.autoelim
+        self.deathrate = Decimal(10) if self.parser.maxsize is None else Decimal(self.parser.deathrate)
 
         self.players = self.parser.players
         self.arenas = self.parser.arenas
@@ -44,6 +48,10 @@ class Royale:
 
 class Parser:
     def __init__(self, lines):
+        self.minsize = None
+        self.maxsize = None
+        self.autoelim = None
+        self.deathrate = None
         self.players = []
         self.arenas = []
         self.bloodbaths = []
@@ -52,7 +60,6 @@ class Parser:
         self.fataldayevents = []
         self.fatalnightevents = []
         self.feasts = []
-        raise NotImplementedError
 
     def parse(self):
         for line in self.lines:
