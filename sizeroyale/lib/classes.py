@@ -6,6 +6,10 @@ from sizeroyale.lib.units import SV
 from sizeroyale.lib.utils import isURL
 
 
+class ParseError(Exception):
+    pass
+
+
 class Royale:
     def __init__(self, file):
         self._file = file
@@ -77,24 +81,67 @@ class Arena:
 
 
 class Event:
-    def __init__(self, text: str, tributes: int, *, sizes, elims, perps, gives, removes, rarity):
+    valid_data = ["tributes", "sizes", "elims", "perps", "gives", "removes", "rarity"]
+
+    def __init__(self, text: str, meta):
+        self._metadata = MetaParser(type(self)).parse(meta)
         self.text = text
-        self.tributes = tributes
-        self.sizes = None if sizes is None else sizes
-        self.elims = None if elims is None else elims
-        self.perps = None if perps is None else perps
-        self.gives = None if gives is None else gives
-        self.removes = None if removes is None else removes
-        self.rarity = 1 if rarity is None else rarity
+        self.tributes = self._metadata.tributes
+        self.sizes = self._metadata.sizes
+        self.elims = self._metadata.elims
+        self.perps = self._metadata.perps
+        self.gives = self._metadata.gives
+        self.removes = self._metadata.removes
+        self.rarity = 1 if self._metadata.rarity is None else self._metadata.rarity
 
 
 class Player:
-    def __init__(self, name, team, gender, height, url):
+    valid_data = ["name", "team", "gender", "height", "url"]
+
+    def __init__(self, name, meta):
+        self._metadata = MetaParser(type(self)).parse(meta)
         self.name = name
-        self.team = team
-        self.gender = gender
-        self.height = SV.parse(height) if isinstance(str, height) else SV.parse(str(height) + "m")
-        if not isURL(url):
-            raise ValueError(f"{url} is not a URL.")
-        self.url = url
+        self.team = self._metadata.team
+        self.gender = self._metadata.gender
+        self.height = SV.parse(self._metadata.height) if isinstance(str, self._metadata.height) else SV.parse(str(self._metadata.height) + "m")
+        if not isURL(self._metadata.url):
+            raise ValueError(f"{self._metadata.url} is not a URL.")
+        self.url = self._metadata.url
         self.inventory = []
+
+
+class Setup:
+    valid_data = ["autoelim", "deathrate", "maxsize", "minsize"]
+
+    def __init__(self, meta):
+        self._metadata = MetaParser(type(self)).parse(meta)
+        self.autoelim = self._metadata.autoelim
+        self.deathrate = self._metadata.deathrate
+        self.maxsize = self._metadata.maxsize
+        self.minsize = self._metadata.minsize
+
+
+class MetaParser:
+    def __init__(self, t):
+        self.t = t
+
+    def parse(self, s):
+        try:
+            _ = self.t.valid_data
+        except AttributeError:
+            raise ParseError
+
+        returndict = {}
+        itemsdict = {}
+
+        items = s.split(",")
+        for item in items:
+            item = item.strip()
+            kv = [item.split(":", 1)]
+            itemsdict[kv[0]] = kv[1]
+
+        for key in self.t.valid_data:
+            if key in items:
+                returndict[key] = itemsdict[key]
+            else:
+                returndict[key] = None
