@@ -184,7 +184,7 @@ class Event:
         self.gives = self._metadata.gives
         self.removes = self._metadata.removes
         self.rarity = 1 if self._metadata.rarity is None else self._metadata.rarity
-        self.fillins = {}
+        self.dummies = {}
 
     def parse(self, s):
         raise NotImplementedError
@@ -217,12 +217,27 @@ class Setup:
 
 
 class DummyPlayer:
-    def __init__(self, *, lessthan, greaterthan, team, item, gender):
+    def __init__(self, pid, *, lessthan, greaterthan, team, item, gender):
+        self.pid = pid
         self.lessthan = SV.parse(lessthan)
         self.greaterthan = SV.parse(greaterthan)
         self.team = team
         self.item = item
         self.gender = gender
+
+    def matches(self, player: Player):
+        if not (self.team is None or player.team == self.team):
+            return False
+        if not (self.lessthan is None or player.height <= self.lessthan):
+            return False
+        if not (self.greaterthan is None or player.height >= self.greaterthan):
+            return False
+        if not (self.gender is None or self.gender in player.gender):
+            return False
+        if not (self.item is None or self.item in player.inventory):
+            return False
+
+        return True
 
 
 class MetaParser:
