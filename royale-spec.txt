@@ -85,6 +85,9 @@ tributes:2
 "%1% camouflages %p:1self% in the bushes, waiting for someone to come by."
 tributes:1
 
+"%1:g:M% is a guy, wow."
+tributes:1
+
 [night]
 "%1>10ft% uses %p:1s% supplies %p:1% gathered to get a better size."
 tributes:1, size:1:-3ft
@@ -93,11 +96,14 @@ tributes:1, size:1:-3ft
 tributes:4
 
 [fatalday]
-"%1% was disqualified for leaving the arena to get some snacks.
+"%1% was disqualified for leaving the arena to get some snacks."
 tributes:1, elim:1
 
+"%1:A% kills %2:B% for the revolution."
+tributes:2, elim:2, perp:1
+
 [fatalnight]
-"%1% tracks down and shrinks %2% out of the contest."
+"%1:inv:shrinkgun% tracks down and shrinks %2% out of the contest."
 tributes:1, elim:2, perp:1
 
 [feast]
