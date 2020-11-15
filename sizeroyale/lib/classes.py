@@ -3,19 +3,17 @@ from typing import Tuple, Union
 import re
 
 from sizeroyale.lib.attrdict import AttrDict
+from sizeroyale.lib.errors import ParseError
 from sizeroyale.lib.units import SV
-from sizeroyale.lib.utils import isURL
+from sizeroyale.lib.utils import formatTraceback, isURL
 
 re_header = r"\[(.*)\]"
 re_quotes = r"\"(.*)\""
-
-
-class ParseError(Exception):
-    def __init__(self, *args):
-        if args:
-            self.message = args[0]
-        else:
-            self.message = None
+re_arena = r"\<(.*)\>\s*\"(.*)\""
+re_format = r"%(.*?)%"
+re_digit = r"\d"
+re_team = r"[A-Z]"
+re_gender = r"[MFX]"
 
 
 class Royale:
@@ -78,6 +76,7 @@ class Parser:
         self.feast_events = []
 
         self._current_header = None
+        self._current_arena = None
         self._current_line = None
         self._skip_next_line = False
 
@@ -93,6 +92,8 @@ class Parser:
                 self._parse_line(n)
             except ParseError as e:
                 self.errors.append(f"Line {self.original_line_numbers[n]}: " + e.message)
+        # If there is still a arena in the queue, add it.
+        self.arenas.append(self._current_arena)
 
     def _clean_lines(self):
         fixed_lines = []
@@ -170,16 +171,36 @@ class Parser:
             event = Event(event_text, meta)
             getattr(self, self._current_header + "_events").append(event)
 
+        elif self._current_header == "arena":
+            if (match := re.match(re_arena, line)):
+                if self._current_arena:
+                    self.arenas.append(self._current_arena)
+                    self._current_arena = None
+                arena_name = match.group(1)
+                arena_description = match.group(2)
+                self._current_arena = Arena(arena_name, arena_description)
+            elif (match := re.match(re_quotes, line)):
+                if (match := re.match(re_quotes, line)):
+                    event_text = match.group(1)
+                else:
+                    raise ParseError("No quoted string found for event!")
+                meta = self._read_next_line
+
+                event = Event(event_text, meta)
+                self._current_arena.add_event(event)
+
         else:
             return
 
 
 class Arena:
-    def __init__(self, name: str, description: str, events: list):
+    def __init__(self, name: str, description: str, *, events: list = []):
         self.name = name
         self.description = description
         self.events = events
 
+    def add_event(self, e):
+        self.events.append(e)
 
 class Event:
     valid_data = ["tributes", "sizes", "elims", "perps", "gives", "removes", "rarity"]
@@ -196,11 +217,65 @@ class Event:
         self.rarity = 1 if self._metadata.rarity is None else self._metadata.rarity
         self.dummies = {}
 
-        # self.parse(self.text)
+        self.parse(self.text)
 
     def parse(self, s):
-        raise NotImplementedError
+        formats = re.findall(re_format, s)
 
+        formatchecker = {}
+
+        for f in formats:
+            if f[0] in ["p", "P"]:
+                pass
+            elif f[0] not in formatchecker:
+                formatchecker[f[0]] = f[1:]
+            else:
+                if formatchecker[f[0]] != f[1:]:
+                    raise ParseError("Multiple definitions for one player!")
+
+        for f in formats:
+            pid = None
+            lessthan = None
+            greaterthan = None
+            team = None
+            item = None
+            gender = None
+
+            pid = f[0]
+            if len(f) > 1:
+                if f[1] == "<":  # lessthan
+                    lessthan = f[2:]
+                elif f[1] == ">":  # greaterthan
+                    greaterthan = f[2:]
+                elif f[1] == ":":
+                    parts = f.split(":")
+                    if len(parts) == 2:
+                        if re.match(re_team, parts[1]):
+                            team = parts[1]
+                        else:
+                            ParseError(f"{parts[1]} is not a valid team.")
+                    elif len(parts) == 3:
+                        if parts[1] == "g":
+                            if re.match(re_gender, parts[2]):
+                                gender = parts[2]
+                            else:
+                                ParseError(f"{parts[2]} is not a vaild gender.")
+                        if parts[1] == "inv":
+                            item = parts[2]
+                    else:
+                        ParseError(f"Invalid format tag: {f}")
+            elif len(f) == 1:
+                pass
+            else:
+                ParseError(f"Invalid format tag: {f}")
+
+            self.dummies[pid] = DummyPlayer(lessthan = lessthan,
+                                            greaterthan = greaterthan,
+                                            team = team,
+                                            item = item,
+                                            gender = gender)
+
+        return f"<Event {self.text!r} | tributes = {self.tributes!r}, sizes = {self.sizes!r}, elims = {self.elims!r}, perps = {self.perps!r}, gives = {self.gives!r}, removes = {self.removes!r}, rarity = {self.rarity!r}, dummies = {self.dummies!r}>"
 
 class Player:
     valid_data = ["team", "gender", "height", "url"]
@@ -227,12 +302,13 @@ class Setup:
         self.maxsize = self._metadata.maxsize
         self.minsize = self._metadata.minsize
 
+        return f"<Setup {hex(id(self))} | autoelim = {self.autoelim!r}, deathrate = {self.deathrate!r}, maxsize = {self.maxsize!r}, minsize = {self.maxsize!r}>"
+
 
 class DummyPlayer:
-    def __init__(self, pid, *, lessthan, greaterthan, team, item, gender):
-        self.pid = pid
-        self.lessthan = SV.parse(lessthan)
-        self.greaterthan = SV.parse(greaterthan)
+    def __init__(self, *, lessthan, greaterthan, team, item, gender):
+        self.lessthan = None if lessthan is None else SV.parse(lessthan)
+        self.greaterthan = None if greaterthan is None else SV.parse(greaterthan)
         self.team = team
         self.item = item
         self.gender = gender
