@@ -34,12 +34,12 @@ class Royale:
         self.players = self.parser.players
         self.arenas = self.parser.arenas
 
-        self._bloodbathevents = self.parser.bloodbath_events
-        self._dayevents = self.parser.day_events
-        self._nightevents = self.parser.night_events
-        self._fataldayevents = self.parser.fatalday_events
-        self._fatalnightevents = self.parser.fatalnight_events
-        self._feastevents = self.parser.feast_events
+        self._bloodbath_events = self.parser.bloodbath_events
+        self._day_events = self.parser.day_events
+        self._night_events = self.parser.night_events
+        self._fatalday_events = self.parser.fatalday_events
+        self._fatalnight_events = self.parser.fatalnight_events
+        self._feast_events = self.parser.feast_events
         eventsdict = {
             "bloodbath_events": self._bloodbath_events,
             "day_events": self._day_events,
@@ -161,7 +161,14 @@ class Parser:
             self.players.append(player)
 
         elif self._current_header in ["bloodbath", "day", "night", "fatalday", "fatalnight", "feast"]:
+            if (match := re.match(re_quotes, line)):
+                event_text = match.group(1)
+            else:
+                raise ParseError("No quoted string found for event!")
+            meta = self._read_next_line
 
+            event = Event(event_text, meta)
+            getattr(self, self._current_header + "_events").append(event)
 
         else:
             return
@@ -188,6 +195,8 @@ class Event:
         self.removes = self._metadata.removes
         self.rarity = 1 if self._metadata.rarity is None else self._metadata.rarity
         self.dummies = {}
+
+        # self.parse(self.text)
 
     def parse(self, s):
         raise NotImplementedError
