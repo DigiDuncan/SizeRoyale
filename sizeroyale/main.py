@@ -14,6 +14,7 @@ logger.addHandler(dfhandler)
 def main():
     logger.info("Welcome to the poopview!")
     game = Royale("C:/Users/digid/Documents/GitHub/SizeRoyale/royale-spec.txt")
+    print(game)
     logger.info("You're poop has been viewed.")
 
 

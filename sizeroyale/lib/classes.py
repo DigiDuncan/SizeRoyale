@@ -55,6 +55,11 @@ class Royale:
     def next(self) -> Tuple[str, Union[str, None]]:
         raise NotImplementedError
 
+    def __str__(self):
+        return f"<Royale {hex(id(self))} | autoelim = {self.autoelim!r}, deathrate = {self.deathrate!r}, maxsize = {self.maxsize!r}, minsize = {self.minsize!r}, players = {self.players!r}, self.arenas = {self.arenas!r}, events = {self.events!r}>"
+
+    def __repr__(self):
+        return str(self)
 
 class Parser:
     def __init__(self, lines):
@@ -191,6 +196,9 @@ class Parser:
 
         else:
             return
+    
+    def __repr__(self):
+        return str(self)
 
 
 class Arena:
@@ -201,6 +209,13 @@ class Arena:
 
     def add_event(self, e):
         self.events.append(e)
+
+    def __str__(self):
+        return f"<Arena {self.name!r} | description = {self.description!r}, events = {self.events!r}>"
+
+    def __repr__(self):
+        return str(self)
+
 
 class Event:
     valid_data = ["tributes", "sizes", "elims", "perps", "gives", "removes", "rarity"]
@@ -275,7 +290,12 @@ class Event:
                                             item = item,
                                             gender = gender)
 
+    def __str__(self):
         return f"<Event {self.text!r} | tributes = {self.tributes!r}, sizes = {self.sizes!r}, elims = {self.elims!r}, perps = {self.perps!r}, gives = {self.gives!r}, removes = {self.removes!r}, rarity = {self.rarity!r}, dummies = {self.dummies!r}>"
+
+    def __repr__(self):
+        return str(self)
+
 
 class Player:
     valid_data = ["team", "gender", "height", "url"]
@@ -291,6 +311,12 @@ class Player:
         self.url = self._metadata.url
         self.inventory = []
 
+    def __str__(self):
+        return f"<Player {self.name!r} | team = {self.team!r}, gender = {self.gender!r}, height = {self.height!r}, url = {self.url!r}, inventory = {self.inventory!r}"
+
+    def __repr__(self):
+        return str(self)
+
 
 class Setup:
     valid_data = ["autoelim", "deathrate", "maxsize", "minsize"]
@@ -302,7 +328,11 @@ class Setup:
         self.maxsize = self._metadata.maxsize
         self.minsize = self._metadata.minsize
 
+    def __str__(self):
         return f"<Setup {hex(id(self))} | autoelim = {self.autoelim!r}, deathrate = {self.deathrate!r}, maxsize = {self.maxsize!r}, minsize = {self.maxsize!r}>"
+
+    def __repr__(self):
+        return str(self)
 
 
 class DummyPlayer:
@@ -326,6 +356,12 @@ class DummyPlayer:
             return False
 
         return True
+
+    def __str__(self):
+        return f"<DummyPlayer {hex(id(self))} | lessthan = {self.lessthan!r}, greaterthan = {self.greaterthan!r}, team = {self.team!r}, item = {self.item!r}, gender = {self.gender!r}>"
+
+    def __repr__(self):
+        return str(self)
 
 
 class MetaParser:

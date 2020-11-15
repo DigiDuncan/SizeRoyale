@@ -27,3 +27,9 @@ class AttrDict:
         if key in self.__slots__:
             raise KeyError(f"{key!r} is a reserved key for {self.__class__.__name__!r}")
         self._values[key] = value
+
+    def __str__(self):
+        return repr(self._values)
+
+    def __repr__(self):
+        return str(self)
