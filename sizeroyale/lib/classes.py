@@ -34,19 +34,19 @@ class Royale:
         self.players = self.parser.players
         self.arenas = self.parser.arenas
 
-        self._bloodbaths = self.parser.bloodbaths
-        self._dayevents = self.parser.dayevents
-        self._nightevents = self.parser.nightevents
-        self._fataldayevents = self.parser.fataldayevents
-        self._fatalnightevents = self.parser.fatalnightevents
-        self._feasts = self.parser.feasts
+        self._bloodbathevents = self.parser.bloodbath_events
+        self._dayevents = self.parser.day_events
+        self._nightevents = self.parser.night_events
+        self._fataldayevents = self.parser.fatalday_events
+        self._fatalnightevents = self.parser.fatalnight_events
+        self._feastevents = self.parser.feast_events
         eventsdict = {
-            "bloodbaths": self._bloodbaths,
-            "dayevents": self._dayevents,
-            "nightevents": self._nightevents,
-            "fataldayevents": self._fataldayevents,
-            "fatalnightevents": self._fatalnightevents,
-            "feasts": self._feasts
+            "bloodbath_events": self._bloodbath_events,
+            "day_events": self._day_events,
+            "night_events": self._night_events,
+            "fatalday_events": self._fatalday_events,
+            "fatalnight_events": self._fatalnight_events,
+            "feast_events": self._feast_events
         }
         self.events = AttrDict(eventsdict)
 
@@ -70,12 +70,12 @@ class Parser:
         self.deathrate = None
         self.players = []
         self.arenas = []
-        self.bloodbaths = []
-        self.dayevents = []
-        self.nightevents = []
-        self.fataldayevents = []
-        self.fatalnightevents = []
-        self.feasts = []
+        self.bloodbath_events = []
+        self.day_events = []
+        self.night_events = []
+        self.fatalday_events = []
+        self.fatalnight_events = []
+        self.feast_events = []
 
         self._current_header = None
         self._current_line = None
@@ -159,6 +159,9 @@ class Parser:
 
             player = Player(name, meta)
             self.players.append(player)
+
+        elif self._current_header in ["bloodbath", "day", "night", "fatalday", "fatalnight", "feast"]:
+
 
         else:
             return
