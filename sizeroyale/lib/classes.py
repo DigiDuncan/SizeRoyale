@@ -56,6 +56,8 @@ class Royale:
 
 class Parser:
     def __init__(self, lines):
+        self._lines = lines
+        self.original_line_numbers = {}
         self.minsize = None
         self.maxsize = None
         self.autoelim = None
@@ -72,6 +74,25 @@ class Parser:
     def parse(self):
         for line in self.lines:
             self._parse_line(line)
+
+    def _clean_lines(self):
+        fixed_lines = []
+        cln = 0
+
+        for line in self._lines:
+            # No newlines, please.
+            cln += 1
+            new_line = line.strip()
+            new_line = new_line.replace("\n", "")
+            # F*** smart quotes.
+            new_line = new_line.replace("“", "\"")
+            new_line = new_line.replace("”", "\"")
+            # Don't bother adding back blank lines.
+            if new_line != "":
+                fixed_lines.append(new_line)
+                self.original_line_numbers[len(fixed_lines) - 1] = cln
+
+        self.file = fixed_lines
 
     def _parse_line(self, line):
         raise NotImplementedError
