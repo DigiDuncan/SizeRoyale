@@ -52,6 +52,9 @@ class Royale:
     def remaining(self) -> int:
         return len(self.players)
 
+    def run_event(self, players, event):
+        raise NotImplementedError
+
     def next(self) -> Tuple[str, Union[str, None]]:
         raise NotImplementedError
 
