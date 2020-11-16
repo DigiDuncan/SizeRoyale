@@ -1,11 +1,11 @@
 Royale(autoelim='True', deathrate=Decimal('10'), maxsize=Decimal('6437.3760'), minsize=Decimal('0.001'), 
-players=[
-	Player(name='DigiDuncan', team='1', gender='M', height=Decimal('1.71450'),
+players={
+	'DigiDuncan': Player(name='DigiDuncan', team='1', gender='M', height=Decimal('1.71450'),
 		url='http://www.cs188.com/fingertits.png',
 		inventory=[]),
-	Player(name='Kelly', team='2', gender='F', height=Decimal('1.8034'),
+	'Kelly': Player(name='Kelly', team='2', gender='F', height=Decimal('1.8034'),
 		url='http://www.images.com/cool.png',
-		inventory=[])],
+		inventory=[])},
 arenas=
 	Arena(name='Real Kelly',
 		description='A Giga-sized Kelly rolls over in her sleep and drools into the arena.',

@@ -76,7 +76,7 @@ class Parser:
         self.maxsize = None
         self.autoelim = None
         self.deathrate = None
-        self.players = []
+        self.players = {}
         self.arenas = []
         self.bloodbath_events = []
         self.day_events = []
@@ -169,7 +169,7 @@ class Parser:
             meta = self._read_next_line
 
             player = Player(name, meta)
-            self.players.append(player)
+            self.players[player.name](player)
 
         elif self._current_header in ["bloodbath", "day", "night", "fatalday", "fatalnight", "feast"]:
             if (match := re.match(re_quotes, line)):
