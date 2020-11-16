@@ -61,7 +61,8 @@ class Royale:
         raise NotImplementedError
 
     def __str__(self):
-        return f"Royale(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.minsize!r}, players={self.players!r}, self.arenas={self.arenas!r}, events={self.events!r})"
+        arenaprint = ", \n".join([f"{a!r}" for a in self.arenas])
+        return f"Royale(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.minsize!r}, \nplayers={self.players!r}, \narenas={arenaprint}, \nevents={self.events!r})"
 
     def __repr__(self):
         return str(self)
@@ -216,7 +217,8 @@ class Arena:
         self.events.append(e)
 
     def __str__(self):
-        return f"Arena(name={self.name!r}, description={self.description!r}, events={self.events!r})"
+        eventprint = ", \n".join([f"{e!r}" for e in self.events])
+        return f"Arena(name={self.name!r}, \ndescription={self.description!r}, \nevents={eventprint})"
 
     def __repr__(self):
         return str(self)
@@ -296,7 +298,10 @@ class Event:
                                             gender = gender)
 
     def __str__(self):
-        return f"Event(text={self.text!r}, tributes={self.tributes!r}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity!r}, dummies={self.dummies!r})"
+        dummyprints = [f"{repr(k)}: {repr(v)}" for k, v in self.dummies.items()]
+        dummyprint = ", \n".join(dummyprints)
+        dummyprint = f"{{{dummyprint}}}"
+        return f"Event(text={self.text!r}, \ntributes={self.tributes!r}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity!r}, \ndummies={dummyprint})"
 
     def __repr__(self):
         return str(self)
@@ -317,7 +322,7 @@ class Player:
         self.inventory = []
 
     def __str__(self):
-        return f"Player(name={self.name!r}, team={self.team!r}, gender={self.gender!r}, height={self.height!r}, url={self.url!r}, inventory={self.inventory!r})"
+        return f"Player(name={self.name!r}, team={self.team!r}, gender={self.gender!r}, height={self.height!r}, \nurl={self.url!r}, \ninventory={self.inventory!r})"
 
     def __repr__(self):
         return str(self)

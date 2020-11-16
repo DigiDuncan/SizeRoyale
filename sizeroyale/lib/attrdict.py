@@ -29,7 +29,10 @@ class AttrDict:
         self._values[key] = value
 
     def __str__(self):
-        return f"AttrDict({repr(self._values)})"
+        kvprints = [f"{repr(k)}: {repr(v)}" for k, v in self._values.items()]
+        kvprint = ", \n".join(kvprints)
+        kvprint = f"{{{kvprint}}}"
+        return f"AttrDict({kvprint})"
 
     def __repr__(self):
         return str(self)
