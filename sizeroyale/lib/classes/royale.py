@@ -111,14 +111,14 @@ class Royale:
                 edata += f"Rarity: {e.rarity!r}"
                 add(edata)
                 if e.dummies == {}:
-                    add("Dummies: {}")
+                    add("Dummies: {}\n")
                 else:
                     add("Dummies: {")
                     sublevel += 1
                     for n, d in e.dummies.items():
                         add(f"{n!r}: {d!r}")
                     sublevel -= 1
-                    outstring = outstring.rstrip() + "}"
+                    outstring = outstring.rstrip() + "}\n"
                 sublevel -= 1
             sublevel -= 1
             sublevel -= 1
@@ -145,7 +145,7 @@ class Royale:
                 edata += f"Rarity: {e.rarity!r}"
                 add(edata)
                 if e.dummies == {}:
-                    add("Dummies: {}")
+                    add("Dummies: {}\n")
                 else:
                     add("Dummies: {")
                     sublevel += 1
