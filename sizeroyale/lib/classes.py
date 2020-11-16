@@ -50,14 +50,33 @@ class Royale:
         }
         self.events = AttrDict(eventsdict)
 
+        self.current_day = 0
+        self.current_event = None
+
+    def is_player_alive(self, player) -> bool:
+        if self.autoelim:
+            return player.height > self.minsize and player.height < self.maxsize and player.dead == False
+        return player.dead == False
+
+    @property
+    def alive_players(self) -> dict:
+        return {k:v for k, v in self.players if self.is_player_alive(v)}
+
+    @property
+    def dead_players(self) -> dict:
+        return {k:v for k, v in self.players if not self.is_player_alive(v)}
+
     @property
     def remaining(self) -> int:
-        return len(self.players)
+        return len(self.alive_players)
 
     def run_event(self, players, event):
         raise NotImplementedError
 
     def next(self) -> Tuple[str, Union[str, None]]:
+        """
+        Returns the text of the next event, and either an associated image, or None.
+        """
         raise NotImplementedError
 
     def __str__(self):
@@ -310,6 +329,7 @@ class Player:
             raise ValueError(f"{self._metadata.url} is not a URL.")
         self.url = self._metadata.url
         self.inventory = []
+        self.dead = False
 
     def __str__(self):
         return repr(self)
