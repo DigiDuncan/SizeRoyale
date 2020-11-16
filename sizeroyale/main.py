@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 from sizeroyale.lib.classes import royale
 from sizeroyale.lib.classes.game import Game
 from digiformatter import logger as digilogger
@@ -14,10 +15,10 @@ logger.addHandler(dfhandler)
 
 def main():
     logger.info("Welcome to the poopview!")
-    game = Game("C:/Users/digid/Documents/GitHub/SizeRoyale/royale-spec.txt")
+    game = Game(Path(__file__).parent.parent / "royale-spec.txt")
     print(game.royale)
     print(game.royale.current_players)
-    logger.info("You're poop has been viewed.")
+    logger.info("Your poop has been viewed.")
 
 
 if __name__ == "__main__":

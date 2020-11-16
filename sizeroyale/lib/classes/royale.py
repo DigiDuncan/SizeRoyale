@@ -1,16 +1,23 @@
+import logging
 from decimal import Decimal
 
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.classes.parser import Parser
 from sizeroyale.lib.units import SV
 
+logger = logging.getLogger("sizeroyale")
+
 class Royale:
     def __init__(self, file):
         self._file = file
 
-        with open(self._file) as f:
-            lines = f.readlines()
-            self.parser = Parser(lines)
+        try:
+            with open(self._file) as f:
+                lines = f.readlines()
+                self.parser = Parser(lines)
+        except FileNotFoundError:
+            logger.error("The file {self._file} could not be found!")
+            exit(1)
 
         self.minsize = SV.parse("1mm") if self.parser.minsize is None else SV.parse(self.parser.minsize)
         self.maxsize = SV.parse("4mi") if self.parser.maxsize is None else SV.parse(self.parser.maxsize)
