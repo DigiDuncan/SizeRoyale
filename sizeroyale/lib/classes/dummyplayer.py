@@ -1,0 +1,30 @@
+from sizeroyale.lib.classes.player import Player
+from sizeroyale.lib.units import SV
+
+class DummyPlayer:
+    def __init__(self, *, lessthan, greaterthan, team, item, gender):
+        self.lessthan = None if lessthan is None else SV.parse(lessthan)
+        self.greaterthan = None if greaterthan is None else SV.parse(greaterthan)
+        self.team = team
+        self.item = item
+        self.gender = gender
+
+    def matches(self, player: Player):
+        if not (self.team is None or player.team == self.team):
+            return False
+        if not (self.lessthan is None or player.height <= self.lessthan):
+            return False
+        if not (self.greaterthan is None or player.height >= self.greaterthan):
+            return False
+        if not (self.gender is None or self.gender in player.gender):
+            return False
+        if not (self.item is None or self.item in player.inventory):
+            return False
+
+        return True
+
+    def __str__(self):
+        return repr(self)
+
+    def __repr__(self):
+        return f"DummyPlayer(lessthan={self.lessthan!r}, greaterthan={self.greaterthan!r}, team={self.team!r}, item={self.item!r}, gender={self.gender!r})"

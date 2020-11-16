@@ -1,5 +1,5 @@
 import logging
-from sizeroyale.lib.classes import Royale
+from sizeroyale.lib.classes.royale import Royale
 from digiformatter import logger as digilogger
 
 # Logging stuff.
