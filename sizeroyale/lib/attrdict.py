@@ -29,7 +29,7 @@ class AttrDict:
         self._values[key] = value
 
     def __str__(self):
-        return repr(self._values)
+        return f"AttrDict({repr(self._values)})"
 
     def __repr__(self):
         return str(self)

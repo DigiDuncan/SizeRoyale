@@ -2,6 +2,8 @@ from decimal import Decimal
 from typing import Tuple, Union
 import re
 
+import tqdm
+
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
 from sizeroyale.lib.units import SV
@@ -59,7 +61,7 @@ class Royale:
         raise NotImplementedError
 
     def __str__(self):
-        return f"<Royale {hex(id(self))} | autoelim = {self.autoelim!r}, deathrate = {self.deathrate!r}, maxsize = {self.maxsize!r}, minsize = {self.minsize!r}, players = {self.players!r}, self.arenas = {self.arenas!r}, events = {self.events!r}>"
+        return f"Royale(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.minsize!r}, players={self.players!r}, self.arenas={self.arenas!r}, events={self.events!r})"
 
     def __repr__(self):
         return str(self)
@@ -214,7 +216,7 @@ class Arena:
         self.events.append(e)
 
     def __str__(self):
-        return f"<Arena {self.name!r} | description = {self.description!r}, events = {self.events!r}>"
+        return f"Arena(name={self.name!r}, description={self.description!r}, events={self.events!r})"
 
     def __repr__(self):
         return str(self)
@@ -294,7 +296,7 @@ class Event:
                                             gender = gender)
 
     def __str__(self):
-        return f"<Event {self.text!r} | tributes = {self.tributes!r}, sizes = {self.sizes!r}, elims = {self.elims!r}, perps = {self.perps!r}, gives = {self.gives!r}, removes = {self.removes!r}, rarity = {self.rarity!r}, dummies = {self.dummies!r}>"
+        return f"Event(text={self.text!r}, tributes={self.tributes!r}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity!r}, dummies={self.dummies!r})"
 
     def __repr__(self):
         return str(self)
@@ -315,7 +317,7 @@ class Player:
         self.inventory = []
 
     def __str__(self):
-        return f"<Player {self.name!r} | team = {self.team!r}, gender = {self.gender!r}, height = {self.height!r}, url = {self.url!r}, inventory = {self.inventory!r}"
+        return f"Player(name={self.name!r}, team={self.team!r}, gender={self.gender!r}, height={self.height!r}, url={self.url!r}, inventory={self.inventory!r})"
 
     def __repr__(self):
         return str(self)
@@ -332,7 +334,7 @@ class Setup:
         self.minsize = self._metadata.minsize
 
     def __str__(self):
-        return f"<Setup {hex(id(self))} | autoelim = {self.autoelim!r}, deathrate = {self.deathrate!r}, maxsize = {self.maxsize!r}, minsize = {self.maxsize!r}>"
+        return f"Setup(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.maxsize!r})"
 
     def __repr__(self):
         return str(self)
@@ -361,7 +363,7 @@ class DummyPlayer:
         return True
 
     def __str__(self):
-        return f"<DummyPlayer {hex(id(self))} | lessthan = {self.lessthan!r}, greaterthan = {self.greaterthan!r}, team = {self.team!r}, item = {self.item!r}, gender = {self.gender!r}>"
+        return f"DummyPlayer(lessthan={self.lessthan!r}, greaterthan={self.greaterthan!r}, team={self.team!r}, item={self.item!r}, gender={self.gender!r})"
 
     def __repr__(self):
         return str(self)
