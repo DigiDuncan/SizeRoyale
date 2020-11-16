@@ -5,7 +5,7 @@ from sizeroyale.lib.errors import ParseError
 from sizeroyale.lib.classes.dummyplayer import DummyPlayer
 from sizeroyale.lib.classes.metaparser import MetaParser
 
-re_format = r"%(\d:.*?)%"
+re_format = r"%(\d.*?)%"
 re_team = r"[A-Z]"
 re_gender = r"[MFX]"
 
@@ -79,7 +79,7 @@ class Event:
             else:
                 ParseError(f"Invalid format tag: {f}")
 
-            self.dummies[pid] = DummyPlayer(lessthan = lessthan,
+            self.dummies[int(pid)] = DummyPlayer(lessthan = lessthan,
                                             greaterthan = greaterthan,
                                             team = team,
                                             item = item,
