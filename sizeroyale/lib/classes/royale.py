@@ -38,33 +38,28 @@ class Royale:
         self.events = AttrDict(eventsdict)
 
         self.current_day = 0
-        self.current_event = None
-
-    def is_player_alive(self, player) -> bool:
-        if self.autoelim:
-            return player.height > self.minsize and player.height < self.maxsize and player.dead == False
-        return player.dead == False
+        self.current_event_type = None
 
     @property
     def alive_players(self) -> dict:
-        return {k:v for k, v in self.players if self.is_player_alive(v)}
+        return {k:v for k, v in self.players.items() if self.is_player_alive(v)}
 
     @property
     def dead_players(self) -> dict:
-        return {k:v for k, v in self.players if not self.is_player_alive(v)}
+        return {k:v for k, v in self.players.items() if not self.is_player_alive(v)}
 
     @property
     def remaining(self) -> int:
         return len(self.alive_players)
 
-    def run_event(self, players, event):
-        raise NotImplementedError
+    @property
+    def current_players(self):
+        return "\n".join([str(p) for p in self.alive_players.values()])
 
-    def next(self) -> Tuple[str, Union[str, None]]:
-        """
-        Returns the text of the next event, and either an associated image, or None.
-        """
-        raise NotImplementedError
+    def is_player_alive(self, player) -> bool:
+        if self.autoelim:
+            return player.height > self.minsize and player.height < self.maxsize and player.dead == False
+        return player.dead == False
 
     def __str__(self):
         return repr(self)
