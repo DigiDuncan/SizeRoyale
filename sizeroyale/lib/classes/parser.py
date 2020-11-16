@@ -51,7 +51,9 @@ class Parser:
             except ParseError as e:
                 self.errors.append(f"Line {self.original_line_numbers[n]}: " + e.message)
         # If there is still a arena in the queue, add it.
-        self.arenas.append(self._current_arena)
+        if self.arenas is not None:
+            self.arenas.append(self._current_arena)
+        self._current_arena = None
 
     def _clean_lines(self):
         fixed_lines = []

@@ -27,4 +27,15 @@ class DummyPlayer:
         return repr(self)
 
     def __repr__(self):
-        return f"DummyPlayer(lessthan={self.lessthan!r}, greaterthan={self.greaterthan!r}, team={self.team!r}, item={self.item!r}, gender={self.gender!r})"
+        reprstring= f"DummyPlayer("
+        if self.lessthan is not None:
+            reprstring += f"lessthan={self.lessthan!r}, "
+        if self.greaterthan is not None:
+            reprstring += f"greaterthan={self.greaterthan!r}, "
+        if self.team is not None:
+            reprstring += f"team={self.team!r}, "
+        if self.item is not None:
+            reprstring += f"item={self.item!r}, "
+        if self.gender is not None:
+            reprstring += f"gender={self.gender!r}, "
+        return reprstring.rstrip().removesuffix(",") + ")"

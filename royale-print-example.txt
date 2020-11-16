@@ -6,16 +6,16 @@ players={
 	'Kelly': Player(name='Kelly', team='2', gender='F', height=Decimal('1.8034'),
 		url='http://www.images.com/cool.png',
 		inventory=[])},
-arenas=
+arenas=[
 	Arena(name='Real Kelly',
 		description='A Giga-sized Kelly rolls over in her sleep and drools into the arena.',
-		events=
+		events=[
 			Event(text='%1% avoids getting swept away.',
 				tributes='1', sizes=None, elims=None, perps=None, gives=None, removes=None, rarity=1,
 				dummies={}),
 			Event(text="%1% is washed out of the arena by Kelly's drool.",
 				tributes=None, sizes=None, elims=None, perps=None, gives=None, removes=None, rarity=1,
-			dummies={})),
+			dummies={}))]],
 events=AttrDict({
 	'bloodbath_events': [
 		Event(text='%1% drinks some shrinking serum.',

@@ -1,5 +1,4 @@
 from decimal import Decimal
-from typing import Tuple, Union
 
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.classes.parser import Parser
@@ -15,8 +14,8 @@ class Royale:
 
         self.minsize = SV.parse("1mm") if self.parser.minsize is None else SV.parse(self.parser.minsize)
         self.maxsize = SV.parse("4mi") if self.parser.maxsize is None else SV.parse(self.parser.maxsize)
-        self.autoelim = True if self.parser.maxsize is None else self.parser.autoelim
-        self.deathrate = Decimal(10) if self.parser.maxsize is None else Decimal(self.parser.deathrate)
+        self.autoelim = True if self.parser.autoelim is None else bool(self.parser.autoelim)
+        self.deathrate = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
 
         self.players = self.parser.players
         self.arenas = self.parser.arenas
@@ -62,7 +61,94 @@ class Royale:
         return player.dead == False
 
     def __str__(self):
-        return repr(self)
+        outstring = ""
+        sublevel = 0
+        def add(string):
+            nonlocal outstring
+            outstring += ("  " * sublevel + string + "\n")
+        add(f"Royale {hex(id(self))}:")
+        add(f"Autoelim: {self.autoelim!r}, Death Rate: {self.deathrate}, Max Size: {self.maxsize}, Min Size: {self.minsize}")
+        add("Players:")
+        sublevel += 1
+        for n, p in self.players.items():
+            add(f"{n!r}: Team: {p.team!r}, Gender: {p.gender!r}, Height: {p.height}, Dead: {p.dead!r}")
+            sublevel += 1
+            add(f"Image: {p.url!r}")
+            add(f"Inventory: {p.inventory!r})")
+            sublevel -=1
+        sublevel -=1
+        add("Arenas:")
+        sublevel += 1
+        for a in self.arenas:
+            add(f"{a.name!r}:")
+            sublevel += 1
+            add(f"Description: {a.description!r},")
+            add(f"Events: ")
+            sublevel +=1
+            for e in a.events:
+                add(f"{e.text}")
+                sublevel += 1
+                edata = f"Tributes: {e.tributes!r}, "
+                if e.sizes is not None:
+                    edata += f"Sizes: {e.sizes!r}, "
+                if e.elims is not None:
+                    edata += f"Elims: {e.elims!r}, "
+                if e.perps is not None:
+                    edata += f"Perps: {e.perps!r}, "
+                if e.gives is not None:
+                    edata += f"Gives: {e.gives!r}, "
+                if e.removes is not None:
+                    edata += f"Removes: {e.removes!r}, "
+                edata += f"Rarity: {e.rarity!r}"
+                add(edata)
+                if e.dummies == {}:
+                    add("Dummies: {}")
+                else:
+                    add("Dummies: {")
+                    sublevel += 1
+                    for n, d in e.dummies.items():
+                        add(f"{n!r}: {d!r}")
+                    sublevel -= 1
+                    outstring = outstring.rstrip() + "}"
+                sublevel -= 1
+            sublevel -= 1
+            sublevel -= 1
+        sublevel -= 1
+        add("Events:")
+        sublevel += 1
+        for et, l in self.events._values.items():
+            add(et.replace("_", " ").title() + ":")
+            sublevel += 1
+            for e in l:
+                add(f"{e.text}")
+                sublevel += 1
+                edata = f"Tributes: {e.tributes!r}, "
+                if e.sizes is not None:
+                    edata += f"Sizes: {e.sizes!r}, "
+                if e.elims is not None:
+                    edata += f"Elims: {e.elims!r}, "
+                if e.perps is not None:
+                    edata += f"Perps: {e.perps!r}, "
+                if e.gives is not None:
+                    edata += f"Gives: {e.gives!r}, "
+                if e.removes is not None:
+                    edata += f"Removes: {e.removes!r}, "
+                edata += f"Rarity: {e.rarity!r}"
+                add(edata)
+                if e.dummies == {}:
+                    add("Dummies: {}")
+                else:
+                    add("Dummies: {")
+                    sublevel += 1
+                    for n, d in e.dummies.items():
+                        add(f"{n!r}: {d!r}")
+                    sublevel -= 1
+                    outstring = outstring.rstrip() + "}\n"
+                sublevel -= 1
+            sublevel -= 1
+        sublevel -= 1
+
+        return outstring
 
     def __repr__(self):
         return f"Royale(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.minsize!r}, players={self.players!r}, arenas={self.arenas!r}, events={self.events!r})"

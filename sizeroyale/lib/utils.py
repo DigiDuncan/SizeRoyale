@@ -247,21 +247,6 @@ def sentence_join(items, *, joiner=None, oxford=False) -> str:
     return f"{', '.join(items[:-1])}{ox} {joiner} {items[-1]}"
 
 
-def removeprefix(self: str, prefix: str, /) -> str:
-    if self.startswith(prefix):
-        return self[len(prefix):]
-    else:
-        return self[:]
-
-
-def removesuffix(self: str, suffix: str, /) -> str:
-    # suffix='' should not call self[:-0].
-    if suffix and self.endswith(suffix):
-        return self[:-len(suffix)]
-    else:
-        return self[:]
-
-
 def regexbuild(li: list, capture = False) -> str:
     """
     regexbuild(["a", "b", "c"])
