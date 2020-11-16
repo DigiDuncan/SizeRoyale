@@ -3,6 +3,7 @@ from decimal import Decimal
 from urllib.parse import quote
 from sizeroyale.lib.errors import ParseError
 
+
 class UnitWrapper:
     def __init__(self, unit):
         self._unit = unit

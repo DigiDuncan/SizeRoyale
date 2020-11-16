@@ -2,6 +2,7 @@ from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.utils import isURL
 from sizeroyale.lib.units import SV
 
+
 class Player:
     valid_data = [("team", "single"), ("gender", "single"), ("height", "single"), ("url", "single")]
 

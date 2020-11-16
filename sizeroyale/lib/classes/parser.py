@@ -94,7 +94,7 @@ class Parser:
         # Comments
         if line.startswith("#"):
             return
-        
+
         # Headers
         if (match := re.match(re_header, line)):
             header = match.group(1)

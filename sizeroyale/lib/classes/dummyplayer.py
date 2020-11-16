@@ -1,6 +1,7 @@
 from sizeroyale.lib.classes.player import Player
 from sizeroyale.lib.units import SV
 
+
 class DummyPlayer:
     def __init__(self, *, lessthan, greaterthan, team, item, gender):
         self.lessthan = None if lessthan is None else SV.parse(lessthan)
@@ -27,7 +28,7 @@ class DummyPlayer:
         return repr(self)
 
     def __repr__(self):
-        reprstring= f"DummyPlayer("
+        reprstring = "DummyPlayer("
         if self.lessthan is not None:
             reprstring += f"lessthan={self.lessthan!r}, "
         if self.greaterthan is not None:

@@ -9,6 +9,7 @@ re_format = r"%(\d.*?)%"
 re_team = r"[A-Z]"
 re_gender = r"[MFX]"
 
+
 class Event:
     valid_data = [("tributes", "single"), ("size", "compound"), ("elim", "list"), ("perp", "list"),
                   ("give", "compound"), ("remove", "compound"), ("rarity", "single")]
@@ -80,10 +81,10 @@ class Event:
                 ParseError(f"Invalid format tag: {f}")
 
             self.dummies[int(pid)] = DummyPlayer(lessthan = lessthan,
-                                            greaterthan = greaterthan,
-                                            team = team,
-                                            item = item,
-                                            gender = gender)
+                                                 greaterthan = greaterthan,
+                                                 team = team,
+                                                 item = item,
+                                                 gender = gender)
 
     def __str__(self):
         return repr(self)

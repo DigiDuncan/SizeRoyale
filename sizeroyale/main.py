@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from sizeroyale.lib.classes import royale
 from sizeroyale.lib.classes.game import Game
 from digiformatter import logger as digilogger
 

@@ -1,5 +1,6 @@
 from sizeroyale.lib.classes.royale import Royale
 
+
 class Game:
     def __init__(self, filepath):
         self.royale = Royale(filepath)

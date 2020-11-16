@@ -7,6 +7,7 @@ from sizeroyale.lib.units import SV
 
 logger = logging.getLogger("sizeroyale")
 
+
 class Royale:
     def __init__(self, file):
         self._file = file
@@ -48,11 +49,11 @@ class Royale:
 
     @property
     def alive_players(self) -> dict:
-        return {k:v for k, v in self.players.items() if self.is_player_alive(v)}
+        return {k: v for k, v in self.players.items() if self.is_player_alive(v)}
 
     @property
     def dead_players(self) -> dict:
-        return {k:v for k, v in self.players.items() if not self.is_player_alive(v)}
+        return {k: v for k, v in self.players.items() if not self.is_player_alive(v)}
 
     @property
     def remaining(self) -> int:
@@ -64,12 +65,13 @@ class Royale:
 
     def is_player_alive(self, player) -> bool:
         if self.autoelim:
-            return player.height > self.minsize and player.height < self.maxsize and player.dead == False
-        return player.dead == False
+            return player.height > self.minsize and player.height < self.maxsize and player.dead is False
+        return player.dead is False
 
     def __str__(self):
         outstring = ""
         sublevel = 0
+
         def add(string):
             nonlocal outstring
             outstring += ("  " * sublevel + string + "\n")
@@ -82,16 +84,16 @@ class Royale:
             sublevel += 1
             add(f"Image: {p.url!r}")
             add(f"Inventory: {p.inventory!r})")
-            sublevel -=1
-        sublevel -=1
+            sublevel -= 1
+        sublevel -= 1
         add("Arenas:")
         sublevel += 1
         for a in self.arenas:
             add(f"{a.name!r}:")
             sublevel += 1
             add(f"Description: {a.description!r},")
-            add(f"Events: ")
-            sublevel +=1
+            add("Events: ")
+            sublevel += 1
             for e in a.events:
                 add(f"{e.text}")
                 sublevel += 1

@@ -1,6 +1,7 @@
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
 
+
 class MetaParser:
     """
     Parse a string of metadata based on a type.
