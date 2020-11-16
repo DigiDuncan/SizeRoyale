@@ -2,7 +2,7 @@ from decimal import Decimal
 from typing import Tuple, Union
 import re
 
-import tqdm
+from tqdm import trange
 
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
@@ -61,7 +61,7 @@ class Royale:
         raise NotImplementedError
 
     def __str__(self):
-        repr(self)
+        return repr(self)
 
     def __repr__(self):
         return f"Royale(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.minsize!r}, players={self.players!r}, arenas={self.arenas!r}, events={self.events!r})"
@@ -97,7 +97,7 @@ class Parser:
     def parse(self):
         if not self.lines:
             raise ParseError("No lines to parse!")
-        for n in range(len(self.lines)):
+        for n in trange(len(self.lines), desc="Parsing..."):
             try:
                 self._parse_line(n)
             except ParseError as e:
