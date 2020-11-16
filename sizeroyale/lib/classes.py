@@ -12,7 +12,7 @@ from sizeroyale.lib.utils import formatTraceback, isURL
 re_header = r"\[(.*)\]"
 re_quotes = r"\"(.*)\""
 re_arena = r"\<(.*)\>\s*\"(.*)\""
-re_format = r"%(.*?)%"
+re_format = r"%(\d:.*?)%"
 re_digit = r"\d"
 re_team = r"[A-Z]"
 re_gender = r"[MFX]"
@@ -247,9 +247,7 @@ class Event:
         formatchecker = {}
 
         for f in formats:
-            if f[0] in ["p", "P"]:
-                pass
-            elif f[0] not in formatchecker:
+            if f[0] not in formatchecker:
                 formatchecker[f[0]] = f[1:]
             else:
                 if formatchecker[f[0]] != f[1:]:
