@@ -3,7 +3,7 @@ from sizeroyale.lib.utils import isURL
 from sizeroyale.lib.units import SV
 
 class Player:
-    valid_data = ["team", "gender", "height", "url"]
+    valid_data = [("team", "single"), ("gender", "single"), ("height", "single"), ("url", "single")]
 
     def __init__(self, name, meta):
         self._original_metadata = meta

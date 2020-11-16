@@ -116,4 +116,4 @@ tributes:1
 tributes:1
 
 "%1% is washed out of the arena by Kelly's drool."
-elim:1
+tributes:1, elim:1

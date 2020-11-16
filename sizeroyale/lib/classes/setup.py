@@ -1,7 +1,8 @@
 from sizeroyale.lib.classes.metaparser import MetaParser
 
 class Setup:
-    valid_data = ["autoelim", "deathrate", "maxsize", "minsize"]
+    valid_data = [("autoelim", "single"), ("deathrate", "single"), 
+                  ("maxsize", "single"), ("minsize", "single")]
 
     def __init__(self, meta):
         self._original_metadata = meta

@@ -1,4 +1,5 @@
 import re
+from decimal import Decimal
 
 from sizeroyale.lib.errors import ParseError
 from sizeroyale.lib.classes.dummyplayer import DummyPlayer
@@ -9,20 +10,24 @@ re_team = r"[A-Z]"
 re_gender = r"[MFX]"
 
 class Event:
-    valid_data = ["tributes", "sizes", "elims", "perps", "gives", "removes", "rarity"]
+    valid_data = [("tributes", "single"), ("size", "compound"), ("elim", "list"), ("perp", "list"),
+                  ("give", "compound"), ("remove", "compound"), ("rarity", "single")]
 
     def __init__(self, text: str, meta):
         self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.text = text
-        self.tributes = self._metadata.tributes
-        self.sizes = self._metadata.sizes
-        self.elims = self._metadata.elims
-        self.perps = self._metadata.perps
-        self.gives = self._metadata.gives
-        self.removes = self._metadata.removes
-        self.rarity = 1 if self._metadata.rarity is None else self._metadata.rarity
+        self.tributes = None if self._metadata.tributes is None else Decimal(self._metadata.tributes)
+        self.sizes = None if self._metadata.size is None else [(int(k), v) for k, v in self._metadata.size]
+        self.elims = None if self._metadata.elim is None else [int(i) for i in self._metadata.elim]
+        self.perps = None if self._metadata.perp is None else [int(i) for i in self._metadata.perp]
+        self.gives = None if self._metadata.give is None else [(int(k), v) for k, v in self._metadata.give]
+        self.removes = None if self._metadata.remove is None else [(int(k), v) for k, v in self._metadata.remove]
+        self.rarity = Decimal(1) if self._metadata.rarity is None else Decimal(self._metadata.rarity)
         self.dummies = {}
+
+        if self.tributes is None:
+            raise ParseError("Tribute amount not defined.")
 
         self.parse(self.text)
 
@@ -84,4 +89,4 @@ class Event:
         return repr(self)
 
     def __repr__(self):
-        return f"Event(text={self.text!r}, tributes={self.tributes!r}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity!r}, dummies={self.dummies!r})"
+        return f"Event(text={self.text!r}, tributes={self.tributes}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity}, dummies={self.dummies!r})"
