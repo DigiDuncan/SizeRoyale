@@ -61,11 +61,10 @@ class Royale:
         raise NotImplementedError
 
     def __str__(self):
-        arenaprint = ", \n".join([f"{a!r}" for a in self.arenas])
-        return f"Royale(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.minsize!r}, \nplayers={self.players!r}, \narenas={arenaprint}, \nevents={self.events!r})"
+        repr(self)
 
     def __repr__(self):
-        return str(self)
+        return f"Royale(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.minsize!r}, players={self.players!r}, arenas={self.arenas!r}, events={self.events!r})"
 
 class Parser:
     def __init__(self, lines):
@@ -202,9 +201,6 @@ class Parser:
 
         else:
             return
-    
-    def __repr__(self):
-        return str(self)
 
 
 class Arena:
@@ -217,11 +213,10 @@ class Arena:
         self.events.append(e)
 
     def __str__(self):
-        eventprint = ", \n".join([f"{e!r}" for e in self.events])
-        return f"Arena(name={self.name!r}, \ndescription={self.description!r}, \nevents={eventprint})"
+        return repr(self)
 
     def __repr__(self):
-        return str(self)
+        return f"Arena(name={self.name!r}, description={self.description!r}, events={self.events!r})"
 
 
 class Event:
@@ -296,13 +291,10 @@ class Event:
                                             gender = gender)
 
     def __str__(self):
-        dummyprints = [f"{repr(k)}: {repr(v)}" for k, v in self.dummies.items()]
-        dummyprint = ", \n".join(dummyprints)
-        dummyprint = f"{{{dummyprint}}}"
-        return f"Event(text={self.text!r}, \ntributes={self.tributes!r}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity!r}, \ndummies={dummyprint})"
+        return repr(self)
 
     def __repr__(self):
-        return str(self)
+        return f"Event(text={self.text!r}, \ntributes={self.tributes!r}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity!r}, dummies={self.dummies!r})"
 
 
 class Player:
@@ -320,10 +312,10 @@ class Player:
         self.inventory = []
 
     def __str__(self):
-        return f"Player(name={self.name!r}, team={self.team!r}, gender={self.gender!r}, height={self.height!r}, \nurl={self.url!r}, \ninventory={self.inventory!r})"
+        return repr(self)
 
     def __repr__(self):
-        return str(self)
+        return f"Player(name={self.name!r}, team={self.team!r}, gender={self.gender!r}, height={self.height!r}, url={self.url!r}, inventory={self.inventory!r})"
 
 
 class Setup:
@@ -337,10 +329,10 @@ class Setup:
         self.minsize = self._metadata.minsize
 
     def __str__(self):
-        return f"Setup(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.maxsize!r})"
+        return str(self)
 
     def __repr__(self):
-        return str(self)
+        return f"Setup(autoelim={self.autoelim!r}, deathrate={self.deathrate!r}, maxsize={self.maxsize!r}, minsize={self.maxsize!r})"
 
 
 class DummyPlayer:
@@ -366,10 +358,10 @@ class DummyPlayer:
         return True
 
     def __str__(self):
-        return f"DummyPlayer(lessthan={self.lessthan!r}, greaterthan={self.greaterthan!r}, team={self.team!r}, item={self.item!r}, gender={self.gender!r})"
+        return repr(self)
 
     def __repr__(self):
-        return str(self)
+        return f"DummyPlayer(lessthan={self.lessthan!r}, greaterthan={self.greaterthan!r}, team={self.team!r}, item={self.item!r}, gender={self.gender!r})"
 
 
 class MetaParser:
