@@ -4,6 +4,7 @@ class Setup:
     valid_data = ["autoelim", "deathrate", "maxsize", "minsize"]
 
     def __init__(self, meta):
+        self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.autoelim = self._metadata.autoelim
         self.deathrate = self._metadata.deathrate

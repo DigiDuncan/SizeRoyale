@@ -6,6 +6,7 @@ class Player:
     valid_data = ["team", "gender", "height", "url"]
 
     def __init__(self, name, meta):
+        self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.name = name
         self.team = self._metadata.team

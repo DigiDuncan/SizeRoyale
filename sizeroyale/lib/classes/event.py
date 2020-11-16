@@ -12,6 +12,7 @@ class Event:
     valid_data = ["tributes", "sizes", "elims", "perps", "gives", "removes", "rarity"]
 
     def __init__(self, text: str, meta):
+        self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.text = text
         self.tributes = self._metadata.tributes
