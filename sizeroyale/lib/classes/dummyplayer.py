@@ -11,8 +11,6 @@ class DummyPlayer:
         self.gender = gender
 
     def matches(self, player: Player):
-        if not (self.team is None or player.team == self.team):
-            return False
         if not (self.lessthan is None or player.height <= self.lessthan):
             return False
         if not (self.greaterthan is None or player.height >= self.greaterthan):
@@ -33,10 +31,10 @@ class DummyPlayer:
             reprstring += f"lessthan={self.lessthan!r}, "
         if self.greaterthan is not None:
             reprstring += f"greaterthan={self.greaterthan!r}, "
-        if self.team is not None:
-            reprstring += f"team={self.team!r}, "
         if self.item is not None:
             reprstring += f"item={self.item!r}, "
         if self.gender is not None:
             reprstring += f"gender={self.gender!r}, "
+        if self.team is not None:
+            reprstring += f"team={self.team!r}, "
         return reprstring.rstrip().removesuffix(",") + ")"

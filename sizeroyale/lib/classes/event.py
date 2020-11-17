@@ -1,9 +1,12 @@
+import random
 import re
 from decimal import Decimal
+from typing import List
 
 from sizeroyale.lib.errors import ParseError
 from sizeroyale.lib.classes.dummyplayer import DummyPlayer
 from sizeroyale.lib.classes.metaparser import MetaParser
+from sizeroyale.lib.classes.player import Player
 
 re_format = r"%(\d.*?)%"
 re_team = r"[A-Z]"
@@ -88,6 +91,16 @@ class Event:
                                                  team = team,
                                                  item = item,
                                                  gender = gender)
+
+    def get_players(self, playerpool: List(Player)):
+        good_players = []
+        random.shuffle(playerpool)
+        # TODO: Account for relative teams.
+        for d in self.dummies:
+            for p in playerpool:
+                if d.matches(p):
+                    good_players.append(p)
+                    break
 
     def __str__(self):
         return repr(self)
