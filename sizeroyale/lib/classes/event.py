@@ -27,10 +27,13 @@ class Event:
         self.rarity = Decimal(1) if self._metadata.rarity is None else Decimal(self._metadata.rarity)
         self.dummies = {}
 
+        self.parse(self.text)
+
         if self.tributes is None:
             raise ParseError("Tribute amount not defined.")
 
-        self.parse(self.text)
+        if self.tributes != len(self.dummies):
+            raise ParseError(f"Tribute amount mismatch. ({self.tributes} != {len(self.dummies)})")
 
     def parse(self, s):
         formats = re.findall(re_format, s)
