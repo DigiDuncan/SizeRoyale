@@ -104,11 +104,11 @@ tributes:2, elim:2, perp:1
 
 [fatalnight]
 "%1:inv:shrinkgun% tracks down and shrinks %2% out of the contest."
-tributes:1, elim:2, perp:1
+tributes:2, elim:2, perp:1
 
 [feast]
 "%1>3ft% takes a strange glowing fruit that was hidden inside the supply building."
-tributes:1
+tributes:1, give:1:fruit
 
 [arena]
 <Real Kelly> "A Giga-sized Kelly rolls over in her sleep and drools into the arena."
