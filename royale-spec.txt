@@ -24,6 +24,7 @@
 # * %n:inv:item% will only match a player with the item specified in their inventory. Items must
 # be all lowercase , with underscores instead of spaces.
 # * %n:g:S% will only match a player of one of genders S, accepts a combonation of M, F, and X.
+# Multiple player-tags can be added to one player with the & symbol, e.g.: %1:g:M&A%.
 # * %p:n% is replaced by player n's third-person pronouns (he, she, they) e.g.: %p:1%
 # * %p:ns% is replaced by player n's possesive pronouns (his, hers, their) e.g.: %p:1s%
 # * %p:nself% is replaced by player n's self pronouns (himself, herself, theirself) e.g.: %p:1self%

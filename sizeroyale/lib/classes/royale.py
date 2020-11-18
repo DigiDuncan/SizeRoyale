@@ -60,8 +60,16 @@ class Royale:
         return len(self.alive_players)
 
     @property
-    def current_players(self):
+    def current_players(self) -> str:
+        """ For display purposes only. Don't parse this."""
         return "\n".join([str(p) for p in self.alive_players.values()])
+
+    @property
+    def current_teams(self) -> list:
+        s = set()
+        for player in self.alive_players:
+            s.add(player.team)
+        return list(s)
 
     def is_player_alive(self, player) -> bool:
         if self.autoelim:

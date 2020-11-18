@@ -50,7 +50,7 @@ class Event:
                 if formatchecker[f[0]] != f[1:]:
                     raise ParseError("Multiple definitions for one player!")
 
-        for f in formats:
+        for ff in formats:
             pid = None
             lessthan = None
             greaterthan = None
@@ -58,33 +58,38 @@ class Event:
             item = None
             gender = None
 
-            pid = f[0]
-            if len(f) > 1:
-                if f[1] == "<":  # lessthan
-                    lessthan = f[2:]
-                elif f[1] == ">":  # greaterthan
-                    greaterthan = f[2:]
-                elif f[1] == ":":
-                    parts = f.split(":")
-                    if len(parts) == 2:
-                        if re.match(re_team, parts[1]):
-                            team = parts[1]
-                        else:
-                            ParseError(f"{parts[1]} is not a valid team.")
-                    elif len(parts) == 3:
-                        if parts[1] == "g":
-                            if re.match(re_gender, parts[2]):
-                                gender = parts[2]
+            pid = ff[0]
+            fs = ff.split("&")
+
+            fs = [pid + ":" + f for f in fs]
+
+            for f in fs:
+                if len(f) > 1:
+                    if f[1] == "<":  # lessthan
+                        lessthan = f[2:]
+                    elif f[1] == ">":  # greaterthan
+                        greaterthan = f[2:]
+                    elif f[1] == ":":
+                        parts = f.split(":")
+                        if len(parts) == 2:
+                            if re.match(re_team, parts[1]):
+                                team = parts[1]
                             else:
-                                ParseError(f"{parts[2]} is not a vaild gender.")
-                        if parts[1] == "inv":
-                            item = parts[2]
-                    else:
-                        ParseError(f"Invalid format tag: {f}")
-            elif len(f) == 1:
-                pass
-            else:
-                ParseError(f"Invalid format tag: {f}")
+                                ParseError(f"{parts[1]} is not a valid team.")
+                        elif len(parts) == 3:
+                            if parts[1] == "g":
+                                if re.match(re_gender, parts[2]):
+                                    gender = parts[2]
+                                else:
+                                    ParseError(f"{parts[2]} is not a vaild gender.")
+                            if parts[1] == "inv":
+                                item = parts[2]
+                        else:
+                            ParseError(f"Invalid format tag: {f}")
+                elif len(f) == 1:
+                    pass
+                else:
+                    ParseError(f"Invalid format tag: {f}")
 
             self.dummies[int(pid)] = DummyPlayer(lessthan = lessthan,
                                                  greaterthan = greaterthan,
@@ -95,12 +100,30 @@ class Event:
     def get_players(self, playerpool: List(Player)):
         good_players = []
         random.shuffle(playerpool)
-        # TODO: Account for relative teams.
+
+        # Assign dummy teams to real teams.
+        teams = set()
+        teammap = {}
+        for player in self.alive_players:
+            teams.add(player.team)
         for d in self.dummies:
-            for p in playerpool:
+            if d.team:
+                if d.team in teammap:
+                    d.realteam = teammap[d.team]
+                else:
+                    randomteam = random.choice(teams)
+                    teammap[d.team] = randomteam
+                    d.realteam = teammap[d.team]
+                    teams.remove(randomteam)
+
+        # Assign dummy players to real players.
+        for d in self.dummies:
+            for n, p in enumerate(playerpool):
                 if d.matches(p):
-                    good_players.append(p)
+                    good_players.append(playerpool.pop(n))
                     break
+
+        return good_players
 
     def __str__(self):
         return repr(self)
