@@ -11,6 +11,8 @@ from sizeroyale.lib.classes.player import Player
 re_format = r"%(\d.*?)%"
 re_team = r"[A-Z]"
 re_gender = r"[MFX]"
+re_pronoun_weak = r"%[pP]:.*%"
+re_pronoun = r"^([pP]):(\d)(|o|s|self)$"
 
 
 class Event:
@@ -38,7 +40,7 @@ class Event:
         if self.tributes != len(self.dummies):
             raise ParseError(f"Tribute amount mismatch. ({self.tributes} != {len(self.dummies)})")
 
-    def parse(self, s):
+    def parse(self, s: str):
         formats = re.findall(re_format, s)
 
         formatchecker = {}
@@ -124,6 +126,30 @@ class Event:
                     break
 
         return good_players
+
+    def fillin(self, players: List(Player), s: str):
+        ...
+
+    def _pronoun_parse(self, players: List(Player), s: str):
+        if not s.startswith("%") and s.endswith("%"):
+            raise ParseError("Pronoun string does not start and end with %.")
+        s = s[1:-1]
+        if (match := re.match(re_pronoun, s)):
+            capital = True if match.group(1) == "P" else False
+            pid = int(match.group(2))
+            player = players[pid - 1]
+            if match.group(3) == "":
+                return player.subject.capitalize() if capital else player.subject
+            elif match.group(3) == "o":
+                return player.object.capitalize() if capital else player.object
+            elif match.group(3) == "s":
+                return player.posessive.capitalize() if capital else player.posessive
+            elif match.group(3) == "self":
+                return player.reflexive.capitalize() if capital else player.reflexive
+            else:
+                raise ParseError(f"Invalid pronoun type '{match.group(3)}'")
+        else:
+            raise ParseError("Pronoun string in incorrect format.")
 
     def __str__(self):
         return repr(self)
