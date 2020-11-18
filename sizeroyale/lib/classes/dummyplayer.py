@@ -42,5 +42,5 @@ class DummyPlayer:
         if self.team is not None:
             reprstring += f"team={self.team!r}, "
         if self.realteam is not None:
-            reprstring += f"team={self.realteam!r}, "
+            reprstring += f"realteam={self.realteam!r}, "
         return reprstring.rstrip().removesuffix(",") + ")"

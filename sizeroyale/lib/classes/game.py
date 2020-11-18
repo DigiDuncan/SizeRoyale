@@ -15,7 +15,7 @@ class Game:
     def next_round(self):
         raise NotImplementedError
 
-    def _next_event(self):
+    def _next_event(self, playerpool: list):
         raise NotImplementedError
 
     def __str__(self):
