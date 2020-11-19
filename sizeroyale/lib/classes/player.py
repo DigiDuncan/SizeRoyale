@@ -1,4 +1,3 @@
-from os import popen
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.utils import isURL
 from sizeroyale.lib.units import SV
@@ -46,6 +45,15 @@ class Player:
             return "her"
         elif self.gender == "X":
             return "their"
+
+    @property
+    def posessive2(self):
+        if self.gender == "M":
+            return "his"
+        elif self.gender == "F":
+            return "hers"
+        elif self.gender == "X":
+            return "theirs"
 
     @property
     def reflexive(self):
