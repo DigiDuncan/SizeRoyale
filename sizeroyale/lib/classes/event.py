@@ -1,7 +1,7 @@
 import random
 import re
 from decimal import Decimal
-from typing import List
+from typing import Dict, List
 
 from sizeroyale.lib.errors import ParseError
 from sizeroyale.lib.classes.dummyplayer import DummyPlayer
@@ -11,7 +11,7 @@ from sizeroyale.lib.classes.player import Player
 re_format = r"%(\d.*?)%"
 re_team = r"[A-Z]"
 re_gender = r"[MFX]"
-re_pronoun_weak = r"%[pP]:.*%"
+re_pronoun_weak = r"%[pP]:.*?%"
 re_pronoun = r"^([pP]):(\d)(|o|s|self)$"
 
 
@@ -51,6 +51,12 @@ class Event:
             else:
                 if formatchecker[f[0]] != f[1:]:
                     raise ParseError("Multiple definitions for one player!")
+
+        pids = [int(k) for k in formatchecker.keys()]
+        pids.sort()
+        highest_player = max(pids)
+        if pids != list(range(1, highest_player + 1)):
+            raise ParseError("Out of order player IDs!")
 
         for ff in formats:
             pid = None
@@ -99,9 +105,11 @@ class Event:
                                                  item = item,
                                                  gender = gender)
 
-    def get_players(self, playerpool: List(Player)):
-        good_players = []
+    def get_players(self, playerpool: Dict[str, Player]):
+        playerpool = [v for k, v in playerpool]
         random.shuffle(playerpool)
+
+        good_players = []
 
         # Assign dummy teams to real teams.
         teams = set()
@@ -127,10 +135,18 @@ class Event:
 
         return good_players
 
-    def fillin(self, players: List(Player), s: str):
-        ...
+    def fillin(self, players: List[Player]):
+        out = self.text
+        for i in range(len(players)):
+            subsstring = "%" + str(i + 1) + ".*?%"
+            out = re.sub(subsstring, players[i].name, out)
+        while (search := re.search(re_pronoun_weak, out)):
+            replacestring = search.group(0)
+            out = out.replace(replacestring, self._pronoun_parse(players, replacestring))
 
-    def _pronoun_parse(self, players: List(Player), s: str):
+        return out
+
+    def _pronoun_parse(self, players: List[Player], s: str):
         if not s.startswith("%") and s.endswith("%"):
             raise ParseError("Pronoun string does not start and end with %.")
         s = s[1:-1]
