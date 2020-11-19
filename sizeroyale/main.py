@@ -17,6 +17,7 @@ def main():
     game = Game(Path(__file__).parent.parent / "royale-spec.txt")
     print(game.royale)
     print(game.royale.current_players)
+    print(game.royale._run_event(game.royale.events.fatalnight_events[0], game.royale.alive_players))
     logger.info("Your poop has been viewed.")
 
 

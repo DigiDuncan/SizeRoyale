@@ -1,8 +1,12 @@
 import logging
 from decimal import Decimal
+from typing import Dict, Tuple, Union
 
 from sizeroyale.lib.attrdict import AttrDict
+from sizeroyale.lib.classes.event import Event
 from sizeroyale.lib.classes.parser import Parser
+from sizeroyale.lib.classes.player import Player
+from sizeroyale.lib.errors import GametimeError
 from sizeroyale.lib.units import SV
 
 logger = logging.getLogger("sizeroyale")
@@ -75,6 +79,17 @@ class Royale:
         if self.autoelim:
             return player.height > self.minsize and player.height < self.maxsize and player.dead is False
         return player.dead is False
+
+    def _run_event(self, event: Event, playerpool: Dict[str, Player]) -> Tuple[str, Union[None, str]]:
+        if event.tributes > len(playerpool):
+            raise GametimeError("Not enough players to run this event!")
+        players = event.get_players(playerpool)
+        eventtext = event.fillin(players)
+        players.insert(0, None)  # Pad the list with one None. This makes PID match up with index, which makes my life easier.
+
+        # TODO: Modify players based on what happened.
+
+        return (eventtext, None)  # TODO: This None will eventually be an image.
 
     def __str__(self):
         outstring = ""

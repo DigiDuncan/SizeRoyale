@@ -106,7 +106,7 @@ class Event:
                                                  gender = gender)
 
     def get_players(self, playerpool: Dict[str, Player]):
-        playerpool = [v for k, v in playerpool]
+        playerpool = [v for v in playerpool.values()]
         random.shuffle(playerpool)
 
         good_players = []
@@ -114,9 +114,9 @@ class Event:
         # Assign dummy teams to real teams.
         teams = set()
         teammap = {}
-        for player in self.alive_players:
+        for player in playerpool:
             teams.add(player.team)
-        for d in self.dummies:
+        for d in self.dummies.values():
             if d.team:
                 if d.team in teammap:
                     d.realteam = teammap[d.team]
@@ -127,7 +127,7 @@ class Event:
                     teams.remove(randomteam)
 
         # Assign dummy players to real players.
-        for d in self.dummies:
+        for d in self.dummies.values():
             for n, p in enumerate(playerpool):
                 if d.matches(p):
                     good_players.append(playerpool.pop(n))
