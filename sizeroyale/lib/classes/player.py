@@ -77,7 +77,12 @@ class Player:
             raise GametimeError(f"{self.name} has no item {self.item!r}!")
 
     def change_height(self, diff: Diff):
-        raise NotImplementedError
+        if diff.changetype == "add":
+            self.height += SV.parse(diff.amount)
+        elif diff.changetype == "multiply":
+            self.height *= diff.amount
+        else:
+            raise GametimeError(f"Unsupported changetype {diff.changetype!r}.")
 
     def __str__(self):
         return f"**{self.name}**: Team {self.team}, Gender {self.gender}, Height {self.height}, Inventory: {'Empty' if self.inventory == [] else self.inventory}. *{'Dead.' if self.dead else 'Alive.'}*"

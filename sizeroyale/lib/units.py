@@ -1,6 +1,8 @@
 import requests
 from decimal import Decimal
 from urllib.parse import quote
+
+from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
 
 
@@ -20,6 +22,8 @@ class UnitWrapper:
         responsejson = r.json()
         if t in ["SV", "WV", "TV"]:
             return Decimal(responsejson[t])
+        if t == "Diff":
+            return AttrDict(responsejson[t])
         return responsejson[t]
 
 
