@@ -3,7 +3,7 @@ from sizeroyale.lib.units import SV
 
 
 class DummyPlayer:
-    def __init__(self, *, lessthan, greaterthan, team, item, gender):
+    def __init__(self, *, lessthan: str, greaterthan: str, team: str, item: str, gender: str):
         self.lessthan = None if lessthan is None else SV.parse(lessthan)
         self.greaterthan = None if greaterthan is None else SV.parse(greaterthan)
         self.team = team
@@ -12,7 +12,7 @@ class DummyPlayer:
 
         self.realteam = None
 
-    def matches(self, player: Player):
+    def matches(self, player: Player) -> bool:
         if not (self.lessthan is None or player.height <= self.lessthan):
             return False
         if not (self.greaterthan is None or player.height >= self.greaterthan):

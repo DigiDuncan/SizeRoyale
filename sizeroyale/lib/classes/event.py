@@ -1,7 +1,7 @@
 import random
 import re
 from decimal import Decimal
-from typing import Dict, List
+from typing import Dict
 
 from sizeroyale.lib.errors import ParseError
 from sizeroyale.lib.listdict import ListDict
@@ -21,7 +21,7 @@ class Event:
     valid_data = [("tributes", "single"), ("size", "compound"), ("elim", "list"), ("perp", "list"),
                   ("give", "compound"), ("remove", "compound"), ("rarity", "single")]
 
-    def __init__(self, text: str, meta):
+    def __init__(self, text: str, meta: str):
         self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.text = text
@@ -43,6 +43,7 @@ class Event:
             raise ParseError(f"Tribute amount mismatch. ({self.tributes} != {len(self.dummies)})")
 
     def parse(self, s: str):
+        """Fill in the properties of the Event."""
         formats = re.findall(re_format, s)
 
         formatchecker = {}
@@ -107,7 +108,9 @@ class Event:
                                                  item = item,
                                                  gender = gender)
 
-    def get_players(self, playerpool: Dict[str, Player]):
+    def get_players(self, playerpool: Dict[str, Player]) -> ListDict[str, Player]:
+        """ Get an ordered dictionary of players that match the DummyPlayers
+        assigned to this event from a pool of players passed in."""
         playerpool = [v for v in playerpool.values()]
         random.shuffle(playerpool)
 
@@ -137,7 +140,9 @@ class Event:
 
         return ListDict({p.name: p for p in good_players})
 
-    def fillin(self, players: ListDict[str, Player]):
+    def fillin(self, players: ListDict[str, Player]) -> str:
+        """Generates a string representing what happens in this event using an
+        ordered list of players as fill-ins."""
         out = self.text
         for i in range(len(players)):
             subsstring = "%" + str(i + 1) + ".*?%"
@@ -148,14 +153,15 @@ class Event:
 
         return out
 
-    def _pronoun_parse(self, players: List[Player], s: str):
+    def _pronoun_parse(self, players: ListDict[str, Player], s: str) -> str:
+        """Gets the correct pronoun from a ordered dict of players and a pronoun format string."""
         if not s.startswith("%") and s.endswith("%"):
             raise ParseError("Pronoun string does not start and end with %.")
         s = s[1:-1]
         if (match := re.match(re_pronoun, s)):
             capital = True if match.group(1) == "P" else False
             pid = int(match.group(2))
-            player = players[pid - 1]
+            player = players.getByIndex(pid - 1)
             if match.group(3) == "":
                 return player.subject.capitalize() if capital else player.subject
             elif match.group(3) == "o":

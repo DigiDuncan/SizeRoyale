@@ -22,7 +22,7 @@ class Player:
         self.elims = 0
 
     @property
-    def subject(self):
+    def subject(self) -> str:
         if self.gender == "M":
             return "he"
         elif self.gender == "F":
@@ -31,7 +31,7 @@ class Player:
             return "they"
 
     @property
-    def object(self):
+    def object(self) -> str:
         if self.gender == "M":
             return "him"
         elif self.gender == "F":
@@ -40,7 +40,7 @@ class Player:
             return "them"
 
     @property
-    def posessive(self):
+    def posessive(self) -> str:
         if self.gender == "M":
             return "his"
         elif self.gender == "F":
@@ -50,7 +50,7 @@ class Player:
 
     # Unused, hope we don't need this.
     @property
-    def posessive2(self):
+    def posessive2(self) -> str:
         if self.gender == "M":
             return "his"
         elif self.gender == "F":
@@ -59,7 +59,7 @@ class Player:
             return "theirs"
 
     @property
-    def reflexive(self):
+    def reflexive(self) -> str:
         if self.gender == "M":
             return "himself"
         elif self.gender == "F":
@@ -67,10 +67,10 @@ class Player:
         elif self.gender == "X":
             return "themself"
 
-    def give_item(self, item):
+    def give_item(self, item: str):
         self.inventory.append(item)
 
-    def remove_item(self, item):
+    def remove_item(self, item: str):
         if item in self.inventory:
             self.inventory.remove(item)
         else:

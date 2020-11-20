@@ -1,3 +1,5 @@
+from typing import Type
+
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
 
@@ -16,10 +18,10 @@ class MetaParser:
     list of tuples of an abitrary length, by splitting the value by colons.
     e.g.: "a:b:c" -> {a: (b, c)} | "a:b:c:d" -> {a: (b, c, d)}
     """
-    def __init__(self, t):
+    def __init__(self, t: Type):
         self.t = t
 
-    def parse(self, s):
+    def parse(self, s: str) -> AttrDict:
 
         returndict = {}
 

@@ -65,7 +65,7 @@ class Royale:
 
     @property
     def current_players(self) -> str:
-        """ For display purposes only. Don't parse this."""
+        """For display purposes only. Don't parse this."""
         return "\n".join([str(p) for p in self.alive_players.values()])
 
     @property
@@ -81,6 +81,7 @@ class Royale:
         return player.dead is False
 
     def _run_event(self, event: Event, playerpool: Dict[str, Player]) -> Tuple[str, Union[None, str]]:
+        """Runs an event, returning the string describing what happened and an image."""
         if event.tributes > len(playerpool):
             raise GametimeError("Not enough players to run this event!")
         players = event.get_players(playerpool)

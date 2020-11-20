@@ -15,7 +15,7 @@ re_digit = r"\d"
 
 
 class Parser:
-    def __init__(self, lines):
+    def __init__(self, lines: list):
         self._lines = lines
         self.original_line_numbers = {}
         self.errors = []
@@ -74,7 +74,7 @@ class Parser:
 
         self.lines = fixed_lines
 
-    def _read_line(self, n):
+    def _read_line(self, n: int):
         return self.lines[n]
 
     @property
@@ -82,7 +82,7 @@ class Parser:
         self._skip_next_line = True
         return self._read_line(self._current_line + 1)
 
-    def _parse_line(self, n):
+    def _parse_line(self, n: int):
         self._current_line = n
         line = self.lines[n]
 

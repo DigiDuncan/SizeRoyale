@@ -1,3 +1,4 @@
+from typing import Union
 import requests
 from decimal import Decimal
 from urllib.parse import quote
@@ -10,7 +11,7 @@ class UnitWrapper:
     def __init__(self, unit):
         self._unit = unit
 
-    def parse(self, s):
+    def parse(self, s: str) -> Union[Decimal, AttrDict, dict]:
         t = self._unit
         if not isinstance(s, str):
             raise ParseError(f"{s!r} is not a String.")
