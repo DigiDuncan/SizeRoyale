@@ -26,3 +26,4 @@ class UnitWrapper:
 SV = UnitWrapper("SV")
 WV = UnitWrapper("WV")
 TV = UnitWrapper("TV")
+Diff = UnitWrapper("Diff")

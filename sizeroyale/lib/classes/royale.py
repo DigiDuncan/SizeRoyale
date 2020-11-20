@@ -85,9 +85,29 @@ class Royale:
             raise GametimeError("Not enough players to run this event!")
         players = event.get_players(playerpool)
         eventtext = event.fillin(players)
-        players.insert(0, None)  # Pad the list with one None. This makes PID match up with index, which makes my life easier.
 
-        # TODO: Modify players based on what happened.
+        def player_by_id(pid):
+            return self.players[players.getByIndex(pid - 1).name]
+
+        if event.elims is not None:
+            for i in event.elims:
+                player_by_id(i).dead = True
+
+        if event.perps is not None:
+            for i, s in event.gives:
+                player_by_id(i).elims += 1
+
+        if event.gives is not None:
+            for i, s in event.gives:
+                player_by_id(i).give_item(s)
+
+        if event.removes is not None:
+            for i, s in event.removes:
+                player_by_id(i).remove_item(s)
+
+        if event.sizes is not None:
+            for i, d in event.sizes:
+                player_by_id(i).change_height(d)
 
         return (eventtext, None)  # TODO: This None will eventually be an image.
 

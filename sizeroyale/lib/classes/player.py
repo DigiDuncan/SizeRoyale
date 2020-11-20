@@ -1,6 +1,7 @@
+from sizeroyale.lib.errors import GametimeError
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.utils import isURL
-from sizeroyale.lib.units import SV
+from sizeroyale.lib.units import SV, Diff
 
 
 class Player:
@@ -18,6 +19,7 @@ class Player:
         self.url = self._metadata.url
         self.inventory = []
         self.dead = False
+        self.elims = 0
 
     @property
     def subject(self):
@@ -46,6 +48,7 @@ class Player:
         elif self.gender == "X":
             return "their"
 
+    # Unused, hope we don't need this.
     @property
     def posessive2(self):
         if self.gender == "M":
@@ -63,6 +66,18 @@ class Player:
             return "herself"
         elif self.gender == "X":
             return "themself"
+
+    def give_item(self, item):
+        self.inventory.append(item)
+
+    def remove_item(self, item):
+        if item in self.inventory:
+            self.inventory.remove(item)
+        else:
+            raise GametimeError(f"{self.name} has no item {self.item!r}!")
+
+    def change_height(self, diff: Diff):
+        raise NotImplementedError
 
     def __str__(self):
         return f"**{self.name}**: Team {self.team}, Gender {self.gender}, Height {self.height}, Inventory: {'Empty' if self.inventory == [] else self.inventory}. *{'Dead.' if self.dead else 'Alive.'}*"

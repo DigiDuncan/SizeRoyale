@@ -4,6 +4,8 @@ from decimal import Decimal
 from typing import Dict, List
 
 from sizeroyale.lib.errors import ParseError
+from sizeroyale.lib.listdict import ListDict
+from sizeroyale.lib.units import Diff
 from sizeroyale.lib.classes.dummyplayer import DummyPlayer
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.classes.player import Player
@@ -24,7 +26,7 @@ class Event:
         self._metadata = MetaParser(type(self)).parse(meta)
         self.text = text
         self.tributes = None if self._metadata.tributes is None else Decimal(self._metadata.tributes)
-        self.sizes = None if self._metadata.size is None else [(int(k), v) for k, v in self._metadata.size]
+        self.sizes = None if self._metadata.size is None else [(int(k), Diff.parse(v)) for k, v in self._metadata.size]
         self.elims = None if self._metadata.elim is None else [int(i) for i in self._metadata.elim]
         self.perps = None if self._metadata.perp is None else [int(i) for i in self._metadata.perp]
         self.gives = None if self._metadata.give is None else [(int(k), v) for k, v in self._metadata.give]
@@ -133,13 +135,13 @@ class Event:
                     good_players.append(playerpool.pop(n))
                     break
 
-        return good_players
+        return ListDict({p.name: p for p in good_players})
 
-    def fillin(self, players: List[Player]):
+    def fillin(self, players: ListDict[str, Player]):
         out = self.text
         for i in range(len(players)):
             subsstring = "%" + str(i + 1) + ".*?%"
-            out = re.sub(subsstring, players[i].name, out)
+            out = re.sub(subsstring, players.getByIndex(i).name, out)
         while (search := re.search(re_pronoun_weak, out)):
             replacestring = search.group(0)
             out = out.replace(replacestring, self._pronoun_parse(players, replacestring))
