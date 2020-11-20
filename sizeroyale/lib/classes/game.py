@@ -12,6 +12,9 @@ class Game:
             for e in self.royale.parser.errors:
                 logger.error(e)
 
+        self.current_day = 0
+        self.current_event_type = None
+
     def next_round(self):
         raise NotImplementedError
 

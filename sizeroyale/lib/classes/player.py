@@ -85,7 +85,7 @@ class Player:
             raise GametimeError(f"Unsupported changetype {diff.changetype!r}.")
 
     def __str__(self):
-        return f"**{self.name}**: Team {self.team}, Gender {self.gender}, Height {self.height}, Inventory: {'Empty' if self.inventory == [] else self.inventory}. *{'Dead.' if self.dead else 'Alive.'}*"
+        return f"**{self.name}**: Team {self.team}, Gender {self.gender}, Height {self.height}, Eliminations: {self.elims}, Inventory: {'Empty' if self.inventory == [] else self.inventory}. *{'Dead.' if self.dead else 'Alive.'}*"
 
     def __repr__(self):
         return f"Player(name={self.name!r}, team={self.team!r}, gender={self.gender!r}, height={self.height!r}, url={self.url!r}, inventory={self.inventory!r})"

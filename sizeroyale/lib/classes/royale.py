@@ -48,9 +48,6 @@ class Royale:
         }
         self.events = AttrDict(eventsdict)
 
-        self.current_day = 0
-        self.current_event_type = None
-
     @property
     def alive_players(self) -> dict:
         return {k: v for k, v in self.players.items() if self.is_player_alive(v)}
@@ -86,6 +83,7 @@ class Royale:
             raise GametimeError("Not enough players to run this event!")
         players = event.get_players(playerpool)
         eventtext = event.fillin(players)
+        logger.info(eventtext)
 
         def player_by_id(pid):
             return self.players[players.getByIndex(pid - 1).name]
@@ -95,7 +93,7 @@ class Royale:
                 player_by_id(i).dead = True
 
         if event.perps is not None:
-            for i, s in event.gives:
+            for i in event.perps:
                 player_by_id(i).elims += 1
 
         if event.gives is not None:
@@ -141,7 +139,7 @@ class Royale:
             for e in a.events:
                 add(f"{e.text}")
                 sublevel += 1
-                edata = f"Tributes: {e.tributes!r}, "
+                edata = f"Tributes: {e.tributes}, "
                 if e.sizes is not None:
                     edata += f"Sizes: {e.sizes!r}, "
                 if e.elims is not None:
@@ -152,7 +150,7 @@ class Royale:
                     edata += f"Gives: {e.gives!r}, "
                 if e.removes is not None:
                     edata += f"Removes: {e.removes!r}, "
-                edata += f"Rarity: {e.rarity!r}"
+                edata += f"Rarity: {e.rarity}"
                 add(edata)
                 if e.dummies == {}:
                     add("Dummies: {}\n")
@@ -175,7 +173,7 @@ class Royale:
             for e in l:
                 add(f"{e.text}")
                 sublevel += 1
-                edata = f"Tributes: {e.tributes!r}, "
+                edata = f"Tributes: {e.tributes}, "
                 if e.sizes is not None:
                     edata += f"Sizes: {e.sizes!r}, "
                 if e.elims is not None:
@@ -186,7 +184,7 @@ class Royale:
                     edata += f"Gives: {e.gives!r}, "
                 if e.removes is not None:
                     edata += f"Removes: {e.removes!r}, "
-                edata += f"Rarity: {e.rarity!r}"
+                edata += f"Rarity: {e.rarity}"
                 add(edata)
                 if e.dummies == {}:
                     add("Dummies: {}\n")
