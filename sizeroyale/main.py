@@ -17,10 +17,17 @@ def main():
     game = Game(Path(__file__).parent.parent / "royale-spec.txt")
     logger.info(game)
     print(game.royale.current_players)
-    game.royale._run_event(game.royale.events.fatalnight_events[0], game.royale.alive_players)
-    print(game.royale.current_players)
-    game.royale._run_event(game.royale.events.bloodbath_events[0], game.royale.alive_players)
-    print(game.royale.current_players)
+    # game.royale._run_event(game.royale.events.fatalnight_events[0], game.royale.alive_players)
+    # print(game.royale.current_players)
+    # game.royale._run_event(game.royale.events.bloodbath_events[0], game.royale.alive_players)
+    # print(game.royale.current_players)
+
+    game.next()
+    game.next()
+    game.next()
+    game.next()
+    game.next()
+
     logger.info("Your poop has been viewed.")
 
 

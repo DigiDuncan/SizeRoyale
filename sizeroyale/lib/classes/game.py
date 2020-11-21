@@ -4,7 +4,7 @@ import random
 import petname
 
 from sizeroyale.lib.classes.royale import Royale
-from sizeroyale.lib.errors import ThisShouldNeverHappenException
+from sizeroyale.lib.errors import OutOfEventsError, OutOfPlayersError, ThisShouldNeverHappenException
 
 logger = logging.getLogger("sizeroyale")
 
@@ -25,8 +25,16 @@ class Game:
 
         self.current_day = 0
         self.current_event_type = None
+        self.current_arena = None
 
-    def next_round(self):
+    def next(self):
+        round = self._next_round()
+        text = []
+        for e in round:
+            text.append(e["text"])
+        return "\n".join(text)
+
+    def _next_round(self):
         # Reset player pool.
         playerpool = self.royale.alive_players
 
@@ -44,7 +52,7 @@ class Game:
                 self.current_event_type = "feast"
 
             # Run an arena every 10.
-            elif random.randint(10) == 10:
+            elif random.randint(1, 10) == 10:
                 self.current_event_type = "arena"
 
             # Day -> night.
@@ -63,12 +71,37 @@ class Game:
 
         events = []
         while playerpool:
-            events.append(self._next_event(playerpool))
+            e = self._next_event(playerpool)
+            for p in e["players"]:
+                playerpool.pop(p)
+            events.append(e)
 
         return events
 
     def _next_event(self, playerpool: dict):
-        raise NotImplementedError
+        if self.current_event_type in ["bloodbath", "feast", "arena"]:
+            event_type = self.current_event_type
+        elif self.current_event_type in ["day", "night"]:
+            if random.randint(1, self.royale.deathrate) == self.royale.deathrate:
+                event_type = "fatal" + self.current_event_type
+            else:
+                event_type = self.current_event_type
+        else:
+            raise ThisShouldNeverHappenException("Round type not valid.")
+
+        trying_events = True
+        while trying_events:
+            events = getattr(self.royale.events, event_type + "_events")
+            if not events:
+                raise OutOfEventsError
+            event = random.choice(events)
+            try:
+                players = event.get_players(playerpool)
+                r = self.royale._run_event(event, players)
+                trying_events = False
+                return r
+            except OutOfPlayersError:
+                events.remove(event)
 
     def __str__(self):
         return f"Game(seed={self.seed!r}\n{str(self.royale)}\n)"

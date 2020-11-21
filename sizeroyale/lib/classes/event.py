@@ -3,7 +3,7 @@ import re
 from decimal import Decimal
 from typing import Dict
 
-from sizeroyale.lib.errors import ParseError
+from sizeroyale.lib.errors import OutOfPlayersError, ParseError
 from sizeroyale.lib.listdict import ListDict
 from sizeroyale.lib.units import Diff
 from sizeroyale.lib.classes.dummyplayer import DummyPlayer
@@ -137,6 +137,9 @@ class Event:
                 if d.matches(p):
                     good_players.append(playerpool.pop(n))
                     break
+
+        if len(good_players) != len(self.dummies):
+            raise OutOfPlayersError
 
         return ListDict({p.name: p for p in good_players})
 

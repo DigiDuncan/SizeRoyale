@@ -1,6 +1,6 @@
 import logging
 from decimal import Decimal
-from typing import Dict, Optional, Tuple
+from typing import Dict
 
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.classes.event import Event
@@ -79,7 +79,7 @@ class Royale:
             return player.height > self.minsize and player.height < self.maxsize and player.dead is False
         return player.dead is False
 
-    def _run_event(self, event: Event, playerpool: Dict[str, Player]) -> Tuple[str, Optional[str]]:
+    def _run_event(self, event: Event, playerpool: Dict[str, Player]) -> dict:
         """Runs an event, returning the string describing what happened and an image."""
         if event.tributes > len(playerpool):
             raise GametimeError("Not enough players to run this event!")
@@ -116,10 +116,10 @@ class Royale:
                 player_by_id(i).change_height(d)
 
         return {
-            "text":             eventtext,
-            "image":            eventimage,
-            "involved_players": players,
-            "deaths":           deaths
+            "text":    eventtext,
+            "image":   eventimage,
+            "players": players,
+            "deaths":  deaths
         }
 
     def __str__(self):

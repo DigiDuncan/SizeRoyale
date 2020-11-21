@@ -3,6 +3,8 @@ import requests
 from decimal import Decimal
 from urllib.parse import quote
 
+from requests.models import HTTPError
+
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
 
@@ -20,6 +22,8 @@ class UnitWrapper:
         if s is None:
             raise ParseError(f"{s} is not a valid unit string.")
         r = requests.get(f"https://nizebot.bew.by/unit/{t}/parse?s=" + quote(s))
+        if r.status_code != 200:
+            raise HTTPError
         responsejson = r.json()
         if t in ["SV", "WV", "TV"]:
             return Decimal(responsejson[t])
