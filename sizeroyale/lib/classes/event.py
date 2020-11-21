@@ -92,7 +92,7 @@ class Event:
                                 if re.match(re_gender, parts[2]):
                                     gender = parts[2]
                                 else:
-                                    ParseError(f"{parts[2]} is not a vaild gender.")
+                                    ParseError(f"{parts[2]} is not a valid gender.")
                             if parts[1] == "inv":
                                 item = parts[2]
                         else:

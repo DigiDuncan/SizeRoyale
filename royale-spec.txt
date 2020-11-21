@@ -26,7 +26,7 @@
 # * %n:g:S% will only match a player of one of genders S, accepts a combonation of M, F, and X.
 # Multiple player-tags can be added to one player with the & symbol, e.g.: %1:g:M&A%.
 # * %p:n% is replaced by player n's third-person subject pronouns (he, she, they) e.g.: %p:1%
-# * %p:no% is replaced by player n's third-person object pronouns (him, her, them) e.g.: %p:1%
+# * %p:no% is replaced by player n's third-person object pronouns (him, her, them) e.g.: %p:1o%
 # * %p:ns% is replaced by player n's possesive pronouns (his, hers, their) e.g.: %p:1s%
 # * %p:nself% is replaced by player n's self pronouns (himself, herself, themself) e.g.: %p:1self%
 # * Replacing p with P will capitalize the pronoun.
