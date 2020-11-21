@@ -1,6 +1,6 @@
 import logging
 from decimal import Decimal
-from typing import Dict
+from typing import Dict, Optional
 
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.classes.event import Event
@@ -73,6 +73,16 @@ class Royale:
         for player in self.alive_players:
             s.add(player.team)
         return list(s)
+
+    @property
+    def game_over(self) -> Optional[int]:
+        """Returns the winning team, or None if the game isn't over."""
+        if len(self.current_teams) == 1:
+            return self.current_teams[0]
+        elif len(self.current_teams) == 0:
+            return 0
+        else:
+            return None
 
     def is_player_alive(self, player) -> bool:
         if self.autoelim:
