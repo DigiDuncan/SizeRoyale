@@ -1,10 +1,10 @@
 import logging
 import random
-from sizeroyale.lib.errors import ThisShouldNeverHappenException
 
 import petname
 
 from sizeroyale.lib.classes.royale import Royale
+from sizeroyale.lib.errors import ThisShouldNeverHappenException
 
 logger = logging.getLogger("sizeroyale")
 
@@ -61,8 +61,11 @@ class Game:
             else:
                 raise ThisShouldNeverHappenException("Round type not valid.")
 
+        events = []
         while playerpool:
-            self._next_event(playerpool)
+            events.append(self._next_event(playerpool))
+
+        return events
 
     def _next_event(self, playerpool: dict):
         raise NotImplementedError
