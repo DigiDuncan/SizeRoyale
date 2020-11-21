@@ -72,8 +72,6 @@ class Event:
             pid = ff[0]
             fs = ff.split("&")
 
-            fs = [pid + ":" + f for f in fs]
-
             for f in fs:
                 if len(f) > 1:
                     if f[1] == "<":  # lessthan
