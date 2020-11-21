@@ -30,6 +30,8 @@ class Royale:
         self.deathrate = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
 
         self.players = self.parser.players
+        self.original_player_count = len(self.players)
+
         self.arenas = self.parser.arenas
 
         self._bloodbath_events = self.parser.bloodbath_events
@@ -82,7 +84,11 @@ class Royale:
         if event.tributes > len(playerpool):
             raise GametimeError("Not enough players to run this event!")
         players = event.get_players(playerpool)
+
         eventtext = event.fillin(players)
+        eventimage = None  # TODO: This should be a real image.
+        deaths = []
+
         logger.info(eventtext)
 
         def player_by_id(pid):
@@ -91,6 +97,7 @@ class Royale:
         if event.elims is not None:
             for i in event.elims:
                 player_by_id(i).dead = True
+                deaths.append(player_by_id(i))
 
         if event.perps is not None:
             for i in event.perps:
@@ -108,7 +115,12 @@ class Royale:
             for i, d in event.sizes:
                 player_by_id(i).change_height(d)
 
-        return (eventtext, None)  # TODO: This None will eventually be an image.
+        return {
+            "text":             eventtext,
+            "image":            eventimage,
+            "involved_players": players,
+            "deaths":           deaths
+        }
 
     def __str__(self):
         outstring = ""

@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from sizeroyale.lib.errors import GametimeError
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.utils import isURL
@@ -80,7 +82,8 @@ class Player:
         if diff.changetype == "add":
             self.height += SV.parse(diff.amount)
         elif diff.changetype == "multiply":
-            self.height *= diff.amount
+            self.height *= Decimal(diff.amount)
+
         else:
             raise GametimeError(f"Unsupported changetype {diff.changetype!r}.")
 
