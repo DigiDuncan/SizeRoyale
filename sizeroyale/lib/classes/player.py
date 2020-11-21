@@ -9,7 +9,7 @@ from sizeroyale.lib.units import SV, Diff
 class Player:
     valid_data = [("team", "single"), ("gender", "single"), ("height", "single"), ("url", "single")]
 
-    def __init__(self, name, meta):
+    def __init__(self, name: str, meta: str):
         self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.name = name
