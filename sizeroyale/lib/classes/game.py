@@ -1,5 +1,6 @@
 import logging
 import random
+from copy import copy
 
 import petname
 
@@ -90,8 +91,8 @@ class Game:
             raise ThisShouldNeverHappenException("Round type not valid.")
 
         trying_events = True
+        events = copy(getattr(self.royale.events, event_type + "_events"))
         while trying_events:
-            events = getattr(self.royale.events, event_type + "_events")
             if not events:
                 raise OutOfEventsError
             event = random.choice(events)
