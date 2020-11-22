@@ -1,7 +1,10 @@
 import logging
 from pathlib import Path
-from sizeroyale.lib.classes.game import Game
+
 from digiformatter import logger as digilogger
+
+from sizeroyale.lib.classes.game import Game
+from sizeroyale.lib.loglevels import ROYALE
 
 # Logging stuff.
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +19,7 @@ def main():
     logger.info("Welcome to the poopview!")
     game = Game(Path(__file__).parent.parent / "royale-spec.txt")
     logger.info(game)
+    logger.log(ROYALE, f"seed = {game.seed}")
     print(game.royale.current_players)
     # game.royale._run_event(game.royale.events.fatalnight_events[0], game.royale.alive_players)
     # print(game.royale.current_players)

@@ -71,7 +71,7 @@ class Game:
             else:
                 raise ThisShouldNeverHappenException("Round type not valid.")
 
-        logger.log(ROYALE, "[ROUND] " + self.current_event_type)
+        logger.log(ROYALE, "[ROUND] " + self.current_event_type.capitalize() + f", Day {self.current_day}")
         events = []
         while playerpool:
             e = self._next_event(playerpool)
@@ -83,7 +83,7 @@ class Game:
 
     def _next_event(self, playerpool: dict):
         if self.royale.game_over is not None:
-            print(f"GAME OVER! Winning Team: {self.royale.game_over}")
+            logger.log(ROYALE, f"[GAME] GAME OVER! Winning Team: {self.royale.game_over}")
         if self.current_event_type in ["bloodbath", "feast", "arena"]:
             event_type = self.current_event_type
         elif self.current_event_type in ["day", "night"]:
