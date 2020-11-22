@@ -57,7 +57,7 @@ class Event:
 
         pids = [int(k) for k in formatchecker.keys()]
         pids.sort()
-        highest_player = max(pids)
+        highest_player = max(pids) if pids else 0
         if pids != list(range(1, highest_player + 1)):
             raise ParseError("Out of order player IDs!")
 
