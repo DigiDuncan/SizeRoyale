@@ -22,11 +22,8 @@ def main():
     # game.royale._run_event(game.royale.events.bloodbath_events[0], game.royale.alive_players)
     # print(game.royale.current_players)
 
-    game.next()
-    game.next()
-    game.next()
-    game.next()
-    game.next()
+    while game.royale.game_over is not None:
+        game.next()
 
     logger.info("Your poop has been viewed.")
 
