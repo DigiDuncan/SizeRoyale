@@ -74,7 +74,7 @@ team:2, gender:F, height:5ft11in, url:http://www.images.com/cool.png
 "%1% drinks some shrinking serum."
 tributes:1, size:1:0.5x
 
-"%1% and %2% fight for a growth syringe. %1% accidentally uses it on %2% and runs away while %1% is busy growing."
+"%1% and %2% fight for a growth syringe. %1% accidentally uses it on %2% and runs away while %2% is busy growing."
 tributes:2, size:2:2x, rarity:0.5
 
 "%1<1ft% rides on top of %2% as %p:1% leaves."
