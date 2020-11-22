@@ -1,5 +1,6 @@
 import logging
 from decimal import Decimal
+from sizeroyale.lib.loglevels import ROYALE
 from typing import Dict, Optional
 
 from sizeroyale.lib.attrdict import AttrDict
@@ -99,7 +100,7 @@ class Royale:
         eventimage = None  # TODO: This should be a real image.
         deaths = []
 
-        logger.info(eventtext)
+        logger.log(ROYALE, "[EVENT] " + eventtext)
 
         def player_by_id(pid):
             return self.players[players.getByIndex(pid - 1).name]

@@ -1,6 +1,7 @@
 import logging
 import random
 from copy import copy
+from sizeroyale.lib.loglevels import ROYALE
 
 import petname
 
@@ -70,6 +71,7 @@ class Game:
             else:
                 raise ThisShouldNeverHappenException("Round type not valid.")
 
+        logger.log(ROYALE, "[ROUND] " + self.current_event_type)
         events = []
         while playerpool:
             e = self._next_event(playerpool)
