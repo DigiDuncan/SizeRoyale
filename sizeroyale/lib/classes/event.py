@@ -124,7 +124,7 @@ class Event:
                 if d.team in teammap:
                     d.realteam = teammap[d.team]
                 else:
-                    randomteam = random.choice(teams)
+                    randomteam = random.choice(list(teams))
                     teammap[d.team] = randomteam
                     d.realteam = teammap[d.team]
                     teams.remove(randomteam)

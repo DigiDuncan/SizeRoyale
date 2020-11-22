@@ -70,7 +70,7 @@ class Royale:
     @property
     def current_teams(self) -> list:
         s = set()
-        for player in self.alive_players:
+        for player in self.alive_players.values():
             s.add(player.team)
         return list(s)
 

@@ -80,7 +80,7 @@ class Player:
 
     def change_height(self, diff: Diff):
         if diff.changetype == "add":
-            self.height += SV.parse(diff.amount)
+            self.height += Decimal(diff.amount)
         elif diff.changetype == "multiply":
             self.height *= Decimal(diff.amount)
 

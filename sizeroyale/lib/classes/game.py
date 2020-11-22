@@ -81,7 +81,7 @@ class Game:
 
     def _next_event(self, playerpool: dict):
         if self.royale.game_over is not None:
-            print(f"GAME OVER! Winning Team: {self.royale.gameover}")
+            print(f"GAME OVER! Winning Team: {self.royale.game_over}")
         if self.current_event_type in ["bloodbath", "feast", "arena"]:
             event_type = self.current_event_type
         elif self.current_event_type in ["day", "night"]:
