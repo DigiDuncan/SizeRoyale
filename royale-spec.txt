@@ -97,6 +97,12 @@ tributes:1, size:1:-3ft
 "%1%, %2%, %3%, and %4% tell each other lewd stories to get in the mood."
 tributes:4
 
+"Things happen at night."
+tributes:0
+
+"%1% is asleep."
+tributes:1
+
 [fatalday]
 "%1% was disqualified for leaving the arena to get some snacks."
 tributes:1, elim:1
@@ -108,9 +114,18 @@ tributes:2, elim:2, perp:1
 "%1:inv:shrinkgun% tracks down and shrinks %2% out of the contest."
 tributes:2, elim:2, perp:1
 
+"%1% takes %p:1s% heart out of %p:1s% own chest, for some reason."
+tributes:1, elim:1
+
 [feast]
 "%1>3ft% takes a strange glowing fruit that was hidden inside the supply building."
 tributes:1, give:1:fruit
+
+"%1% doesn't go to the feast, F that."
+tributes:1
+
+"%1% and %2% hug each other. Aw."
+tributes:2
 
 [arena]
 <Real Kelly> "A Giga-sized Kelly rolls over in her sleep and drools into the arena."
