@@ -1,3 +1,6 @@
+import logging
+
+
 class CustomError(Exception):
     def __init__(self, *args):
         if args:
@@ -23,4 +26,4 @@ class OutOfEventsError(CustomError):
 
 
 class ThisShouldNeverHappenException(CustomError):
-    pass
+    level = logging.CRITICAL
