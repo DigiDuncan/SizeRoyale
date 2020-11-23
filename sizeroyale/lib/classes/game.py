@@ -94,19 +94,23 @@ class Game:
         else:
             raise ThisShouldNeverHappenException("Round type not valid.")
 
-        trying_events = True
-        events = copy(getattr(self.royale.events, event_type + "_events"))
-        while trying_events:
-            if not events:
-                raise OutOfEventsError
-            event = random.choice(events)
-            try:
-                players = event.get_players(playerpool)
-                r = self.royale._run_event(event, players)
-                trying_events = False
-                return r
-            except OutOfPlayersError:
-                events.remove(event)
+        if self.current_event_type == "arena":
+            self.current_arena = random.choice(self.royale.arenas)
+
+        else:
+            trying_events = True
+            events = copy(getattr(self.royale.events, event_type + "_events"))
+            while trying_events:
+                if not events:
+                    raise OutOfEventsError
+                event = random.choices(events, [e.rarity for e in events])[0]
+                try:
+                    players = event.get_players(playerpool)
+                    r = self.royale._run_event(event, players)
+                    trying_events = False
+                    return r
+                except OutOfPlayersError:
+                    events.remove(event)
 
     def __str__(self):
         return f"Game(seed={self.seed!r}\n{str(self.royale)}\n)"

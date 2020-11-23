@@ -31,7 +31,7 @@ class Event:
         self.perps = None if self._metadata.perp is None else [int(i) for i in self._metadata.perp]
         self.gives = None if self._metadata.give is None else [(int(k), v) for k, v in self._metadata.give]
         self.removes = None if self._metadata.remove is None else [(int(k), v) for k, v in self._metadata.remove]
-        self.rarity = Decimal(1) if self._metadata.rarity is None else Decimal(self._metadata.rarity)
+        self.rarity = 1 if self._metadata.rarity is None else float(self._metadata.rarity)
         self.dummies = {}
 
         self.parse(self.text)
