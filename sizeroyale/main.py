@@ -17,14 +17,10 @@ logger.addHandler(dfhandler)
 
 def main():
     logger.info("Welcome to the poopview!")
-    game = Game(Path(__file__).parent.parent / "royale-spec.txt", seed = "marginally-quick-magpie")
+    game = Game(Path(__file__).parent.parent / "royale-spec.txt")
     logger.info(game)
     logger.log(ROYALE, f"seed = {game.seed}")
     print(game.royale.current_players)
-    # game.royale._run_event(game.royale.events.fatalnight_events[0], game.royale.alive_players)
-    # print(game.royale.current_players)
-    # game.royale._run_event(game.royale.events.bloodbath_events[0], game.royale.alive_players)
-    # print(game.royale.current_players)
 
     while game.royale.game_over is None:
         game.next()
