@@ -31,6 +31,10 @@ class Game:
         self.current_event_type = None
         self.current_arena = None
 
+    @property
+    def game_over(self):
+        return self.royale.game_over
+
     def next(self):
         round = self._next_round()
         text = []
@@ -98,7 +102,8 @@ class Game:
             raise ThisShouldNeverHappenException("Round type not valid.")
 
         if self.current_event_type == "arena":
-            self.current_arena = self.random.choice(self.royale.arenas)
+            if not self.current_arena:
+                self.current_arena = self.random.choice(self.royale.arenas)
 
         else:
             trying_events = True

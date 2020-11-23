@@ -22,7 +22,7 @@ def main():
     logger.log(ROYALE, f"seed = {game.seed}")
     print(game.royale.current_players)
 
-    while game.royale.game_over is None:
+    while game.game_over is None:
         game.next()
 
     logger.info("Your poop has been viewed.")
