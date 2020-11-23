@@ -29,6 +29,7 @@ class Royale:
         self.maxsize = SV.parse("4mi") if self.parser.maxsize is None else SV.parse(self.parser.maxsize)
         self.autoelim = True if self.parser.autoelim is None else bool(self.parser.autoelim)
         self.deathrate = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
+        self.arenafreq = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
 
         self.players = self.parser.players
         self.original_player_count = len(self.players)

@@ -109,6 +109,7 @@ class Parser:
             self.deathrate = setup.deathrate
             self.maxsize = setup.maxsize
             self.minsize = setup.minsize
+            self.arenafreq = setup.arenafreq
             return
 
         # Players

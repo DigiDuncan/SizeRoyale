@@ -56,7 +56,7 @@ class Game:
                 self.current_event_type = "feast"
 
             # Run an arena every 10.
-            elif self.random.randint(1, 10) == 10:
+            elif self.random.randint(1, self.royale.arenafreq) == 1:
                 self.current_event_type = "arena"
 
             # Day -> night.
@@ -90,7 +90,7 @@ class Game:
         if self.current_event_type in ["bloodbath", "feast", "arena"]:
             event_type = self.current_event_type
         elif self.current_event_type in ["day", "night"]:
-            if self.random.randint(1, self.royale.deathrate) == self.royale.deathrate:
+            if self.random.randint(1, self.royale.deathrate) == 1:
                 event_type = "fatal" + self.current_event_type
             else:
                 event_type = self.current_event_type

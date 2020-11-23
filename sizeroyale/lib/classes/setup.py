@@ -3,7 +3,7 @@ from sizeroyale.lib.classes.metaparser import MetaParser
 
 class Setup:
     valid_data = [("autoelim", "single"), ("deathrate", "single"),
-                  ("maxsize", "single"), ("minsize", "single")]
+                  ("maxsize", "single"), ("minsize", "single"), ("arenafreq", "single")]
 
     def __init__(self, meta):
         self._original_metadata = meta
@@ -12,6 +12,7 @@ class Setup:
         self.deathrate = self._metadata.deathrate
         self.maxsize = self._metadata.maxsize
         self.minsize = self._metadata.minsize
+        self.arenafreq = self._metadata.arenafreq
 
     def __str__(self):
         return str(self)
