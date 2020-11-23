@@ -17,7 +17,7 @@ logger.addHandler(dfhandler)
 
 def main():
     logger.info("Welcome to the poopview!")
-    game = Game(Path(__file__).parent.parent / "royale-spec.txt")
+    game = Game(Path(__file__).parent.parent / "royale-spec.txt", seed = "marginally-quick-magpie")
     logger.info(game)
     logger.log(ROYALE, f"seed = {game.seed}")
     print(game.royale.current_players)

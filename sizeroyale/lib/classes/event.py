@@ -1,4 +1,3 @@
-import random
 import re
 from decimal import Decimal
 from typing import Dict
@@ -21,7 +20,8 @@ class Event:
     valid_data = [("tributes", "single"), ("size", "compound"), ("elim", "list"), ("perp", "list"),
                   ("give", "compound"), ("remove", "compound"), ("rarity", "single")]
 
-    def __init__(self, text: str, meta: str):
+    def __init__(self, game, text: str, meta: str):
+        self._game = game
         self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.text = text
@@ -110,7 +110,7 @@ class Event:
         """ Get an ordered dictionary of players that match the DummyPlayers
         assigned to this event from a pool of players passed in."""
         playerpool = [v for v in playerpool.values()]
-        random.shuffle(playerpool)
+        self._game.random.shuffle(playerpool)
 
         good_players = []
 
@@ -124,7 +124,7 @@ class Event:
                 if d.team in teammap:
                     d.realteam = teammap[d.team]
                 else:
-                    randomteam = random.choice(list(teams))
+                    randomteam = self._game.random.choice(list(teams))
                     teammap[d.team] = randomteam
                     d.realteam = teammap[d.team]
                     teams.remove(randomteam)

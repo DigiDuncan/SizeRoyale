@@ -13,7 +13,7 @@ logger = logging.getLogger("sizeroyale")
 
 class Game:
     def __init__(self, filepath, *, seed = None):
-        self.royale = Royale(filepath)
+        self.royale = Royale(filepath, self)
         if self.royale.parser.errors:
             for e in self.royale.parser.errors:
                 logger.error(e)
@@ -23,7 +23,9 @@ class Game:
         else:
             self.seed = seed
 
-        random.seed(self.seed)
+        self.random = random.Random()
+
+        self.random.seed(self.seed)
 
         self.current_day = 0
         self.current_event_type = None
@@ -54,7 +56,7 @@ class Game:
                 self.current_event_type = "feast"
 
             # Run an arena every 10.
-            elif random.randint(1, 10) == 10:
+            elif self.random.randint(1, 10) == 10:
                 self.current_event_type = "arena"
 
             # Day -> night.
@@ -87,7 +89,7 @@ class Game:
         if self.current_event_type in ["bloodbath", "feast", "arena"]:
             event_type = self.current_event_type
         elif self.current_event_type in ["day", "night"]:
-            if random.randint(1, self.royale.deathrate) == self.royale.deathrate:
+            if self.random.randint(1, self.royale.deathrate) == self.royale.deathrate:
                 event_type = "fatal" + self.current_event_type
             else:
                 event_type = self.current_event_type
@@ -95,7 +97,7 @@ class Game:
             raise ThisShouldNeverHappenException("Round type not valid.")
 
         if self.current_event_type == "arena":
-            self.current_arena = random.choice(self.royale.arenas)
+            self.current_arena = self.random.choice(self.royale.arenas)
 
         else:
             trying_events = True
@@ -103,7 +105,7 @@ class Game:
             while trying_events:
                 if not events:
                     raise OutOfEventsError
-                event = random.choices(events, [e.rarity for e in events])[0]
+                event = self.random.choices(events, [e.rarity for e in events])[0]
                 try:
                     players = event.get_players(playerpool)
                     r = self.royale._run_event(event, players)

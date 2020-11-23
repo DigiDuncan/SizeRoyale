@@ -15,7 +15,8 @@ re_digit = r"\d"
 
 
 class Parser:
-    def __init__(self, lines: list):
+    def __init__(self, game, lines: list):
+        self._game = game
         self._lines = lines
         self.original_line_numbers = {}
         self.errors = []
@@ -128,7 +129,7 @@ class Parser:
                 raise ParseError("No quoted string found for event!")
             meta = self._read_next_line
 
-            event = Event(event_text, meta)
+            event = Event(self._game, event_text, meta)
             getattr(self, self._current_header + "_events").append(event)
 
         elif self._current_header == "arena":
@@ -146,7 +147,7 @@ class Parser:
                     raise ParseError("No quoted string found for event!")
                 meta = self._read_next_line
 
-                event = Event(event_text, meta)
+                event = Event(self._game, event_text, meta)
                 self._current_arena.add_event(event)
 
         else:

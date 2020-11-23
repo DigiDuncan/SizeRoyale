@@ -14,13 +14,13 @@ logger = logging.getLogger("sizeroyale")
 
 
 class Royale:
-    def __init__(self, file):
+    def __init__(self, file, game):
         self._file = file
 
         try:
             with open(self._file) as f:
                 lines = f.readlines()
-                self.parser = Parser(lines)
+                self.parser = Parser(game, lines)
         except FileNotFoundError:
             logger.error("The file {self._file} could not be found!")
             exit(1)
