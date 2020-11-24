@@ -30,6 +30,7 @@ class Game:
         self.current_day = 0
         self.current_event_type = None
         self.current_arena = None
+        self.running_arena = False
 
     @property
     def game_over(self):
@@ -84,6 +85,9 @@ class Game:
             for p in e["players"]:
                 playerpool.pop(p)
             events.append(e)
+        if self.running_arena:
+            self.running_arena = False
+            logger.log(ROYALE, "[ARENA] Arena over!")
 
         return events
 
@@ -104,6 +108,21 @@ class Game:
         if self.current_event_type == "arena":
             if not self.current_arena:
                 self.current_arena = self.random.choice(self.royale.arenas)
+                self.running_arena = True
+                logger.log(ROYALE, f"[ARENA] Running arena {self.current_arena.name}...")
+            trying_events = True
+            events = copy(self.current_arena.events)
+            while trying_events:
+                if not events:
+                    raise OutOfEventsError
+                event = self.random.choices(events, [e.rarity for e in events])[0]
+                try:
+                    players = event.get_players(playerpool)
+                    r = self.royale._run_event(event, players)
+                    trying_events = False
+                    return r
+                except OutOfPlayersError:
+                    events.remove(event)
 
         else:
             trying_events = True
