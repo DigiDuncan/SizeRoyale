@@ -114,6 +114,9 @@ class Event:
 
         good_players = []
 
+        if len(playerpool) < len(self.dummies):
+            raise OutOfPlayersError
+
         # Assign dummy teams to real teams.
         teams = set()
         teammap = {}
