@@ -31,13 +31,18 @@ class Game:
         self.current_event_type = None
         self.current_arena = None
         self.running_arena = False
+        self.feasted = False
 
     @property
     def game_over(self):
         return self.royale.game_over
 
     def next(self):
+        if self.game_over:
+            return "This game is already completed. Please start a new game."
         round = self._next_round()
+        if round is None:
+            return None
         text = []
         for e in round:
             text.append(e["text"])
@@ -57,8 +62,9 @@ class Game:
             self.current_event_type = "day"
         else:
             # Run a feast when half the population is eliminated.
-            if self.royale.original_player_count / 2 > self.royale.remaining:
+            if self.royale.original_player_count / 2 > self.royale.remaining and self.feasted is False:
                 self.current_event_type = "feast"
+                self.feasted = True
 
             # Run an arena every 10.
             elif self.random.randint(1, self.royale.arenafreq) == 1:
@@ -81,6 +87,9 @@ class Game:
         logger.log(ROYALE, "[ROUND] " + self.current_event_type.capitalize() + f", Day {self.current_day}")
         events = []
         while playerpool:
+            if self.game_over:
+                logger.log(ROYALE, f"[GAME] GAME OVER! Winning Team: {self.royale.game_over}")
+                return None
             e = self._next_event(playerpool)
             for p in e["players"]:
                 playerpool.pop(p)
