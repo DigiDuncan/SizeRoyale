@@ -17,8 +17,9 @@ re_pronoun = r"^([pP]):(\d)(|o|s|self)$"
 
 
 class Event:
-    valid_data = [("tributes", "single"), ("size", "compound"), ("elim", "list"), ("perp", "list"),
-                  ("give", "compound"), ("remove", "compound"), ("rarity", "single")]
+    valid_data = [("tributes", "single"), ("size", "compound"),
+                  ("elim", "list"), ("perp", "list"), ("give", "compound"), ("remove", "compound"),
+                  ("giveattr", "compound"), ("removeattr", "compound"), ("clear", "list"), ("rarity", "single")]
 
     def __init__(self, game, text: str, meta: str):
         self._game = game
@@ -31,6 +32,9 @@ class Event:
         self.perps = None if self._metadata.perp is None else [int(i) for i in self._metadata.perp]
         self.gives = None if self._metadata.give is None else [(int(k), v) for k, v in self._metadata.give]
         self.removes = None if self._metadata.remove is None else [(int(k), v) for k, v in self._metadata.remove]
+        self.giveattrs = None if self._metadata.giveattr is None else [(int(k), v) for k, v in self._metadata.giveattr]
+        self.removeattrs = None if self._metadata.removeattr is None else [(int(k), v) for k, v in self._metadata.removeattr]
+        self.clears = None if self._metadata.clear is None else [int(i) for i in self._metadata.clear]
         self.rarity = 1 if self._metadata.rarity is None else float(self._metadata.rarity)
         self.dummies = {}
 
@@ -71,6 +75,7 @@ class Event:
             team = None
             item = None
             gender = None
+            attribute = None
 
             pid = ff[0]
             fs = ff.split("&")
@@ -96,6 +101,8 @@ class Event:
                                     ParseError(f"{parts[2]} is not a valid gender.")
                             if parts[1] == "inv":
                                 item = parts[2]
+                            if parts[1] == "attr":
+                                attribute = parts[2]
                             if parts[1] == "elims":
                                 if parts[2].startswith(">"):
                                     elimsgreaterthan = parts[2][1:]
@@ -117,7 +124,8 @@ class Event:
                                                  elimsequal = elimsequal,
                                                  team = team,
                                                  item = item,
-                                                 gender = gender)
+                                                 gender = gender,
+                                                 attribute = attribute)
 
     def get_players(self, playerpool: Dict[str, Player]) -> ListDict[str, Player]:
         """ Get an ordered dictionary of players that match the DummyPlayers

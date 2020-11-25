@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import ItemsView
 
 from sizeroyale.lib.classes.player import Player
 from sizeroyale.lib.units import SV
@@ -7,14 +8,16 @@ from sizeroyale.lib.units import SV
 class DummyPlayer:
     def __init__(self, *, lessthan: str = None, greaterthan: str = None,
                  elimslessthan: str = None, elimsgreaterthan: str = None, elimsequal: str = None,
-                 team: str = None, item: str = None, gender: str = None):
+                 team: str = None, items: list = None, gender: str = None,
+                 attributes: list = None):
         self.lessthan = None if lessthan is None else SV.parse(lessthan)
         self.greaterthan = None if greaterthan is None else SV.parse(greaterthan)
         self.elimslessthan = None if elimslessthan is None else Decimal(elimslessthan)
         self.elimsgreaterthan = None if elimsgreaterthan is None else Decimal(elimsgreaterthan)
         self.elimsequal = None if elimsequal is None else Decimal(elimsequal)
         self.team = team
-        self.item = item
+        self.items = items
+        self.attributes = attributes
         self.gender = gender
 
         self.realteam = None
@@ -32,7 +35,9 @@ class DummyPlayer:
             return False
         if not (self.gender is None or self.gender in player.gender):
             return False
-        if not (self.item is None or self.item in player.inventory):
+        if not (self.item is None or all(item in player.inventory for item in self.items)):
+            return False
+        if not (self.attribute is None or all(attribute in player.attributes for attribute in self.attributes)):
             return False
         if not (self.realteam is None or self.realteam == player.team):
             return False

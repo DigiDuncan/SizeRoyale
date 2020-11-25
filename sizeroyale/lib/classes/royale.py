@@ -123,6 +123,18 @@ class Royale:
             for i, s in event.removes:
                 player_by_id(i).remove_item(s)
 
+        if event.clears is not None:
+            for i in event.clears:
+                player_by_id(i).clear_inventory()
+
+        if event.giveattrs is not None:
+            for i, s in event.giveattrs:
+                player_by_id(i).give_attribute(s)
+
+        if event.removeattrs is not None:
+            for i, s in event.removeattrs:
+                player_by_id(i).remove_attribute(s)
+
         if event.sizes is not None:
             for i, d in event.sizes:
                 player_by_id(i).change_height(d)

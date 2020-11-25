@@ -64,7 +64,7 @@
 # A player elims if they are shrunk beyond 1mm, grow beyond 4 miles, or are eliminated manually.
 
 [setup]
-autoelim:True, minsize:1mm, maxsize:4mi, deathrate:10, arenafreq: 10
+autoelim:True, minsize:1mm, maxsize:4mi, deathrate:10, arenafreq:10
 
 [players]
 "DigiDuncan"

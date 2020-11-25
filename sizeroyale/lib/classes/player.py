@@ -7,7 +7,7 @@ from sizeroyale.lib.units import SV, Diff
 
 
 class Player:
-    valid_data = [("team", "single"), ("gender", "single"), ("height", "single"), ("url", "single")]
+    valid_data = [("team", "single"), ("gender", "single"), ("height", "single"), ("url", "single"), ("attr", "list")]
 
     def __init__(self, name: str, meta: str):
         self._original_metadata = meta
@@ -19,6 +19,8 @@ class Player:
         if not isURL(self._metadata.url):
             raise ValueError(f"{self._metadata.url} is not a URL.")
         self.url = self._metadata.url
+        self.attributes = [] if self._metadata.attr is None else self._metadata.attr
+        
         self.inventory = []
         self.dead = False
         self.elims = 0
@@ -77,6 +79,18 @@ class Player:
             self.inventory.remove(item)
         else:
             raise GametimeError(f"{self.name} has no item {self.item!r}!")
+
+    def clear_inventory(self):
+        self.inventory = []
+
+    def give_attribute(self, attribute: str):
+        self.inventory.append(attribute)
+
+    def remove_attribute(self, attribute: str):
+        if attribute in self.inventory:
+            self.inventory.remove(attribute)
+        else:
+            raise GametimeError(f"{self.name} has no attribute {self.attribute!r}!")
 
     def change_height(self, diff: Diff):
         if diff.changetype == "add":
