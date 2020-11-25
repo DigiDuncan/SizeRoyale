@@ -1,18 +1,32 @@
-# Size Royale Scenario File
+## Size Royale Scenario File
 # This document serves as a documentation of the specification used for
 # defining a royale, as well as (if implemented correctly) is an example
 # of a correctly-formatted document.
 
+## Headers
 # Headers are contained in brackets, e.g.: [header]
 # Valid headers are setup, bloodbath, day, night, fatalday, fatalnight, feast, and arena.
 # Arena sub-headers are denoted by pointy brackets and then a description
 # and must be in the [arena] section,
 # e.g.: <real kelly> "A Giga-sized Kelly rolls over in her sleep and drools into the arena."
 
+## Comments
 # Comments, as you may have noticed, start with #. They (as well as empty lines) are ignored.
 
-# Scenarios are denoted by quoted strings contained under valid headers, one a single line.
+## Setup
+# The setup header and subsequent entries work similarly, with the quoted string
+# being a player name, and the following metadata being under it:
+# * team:n, n being an integer.
+# * gender:S, S being an uppercase letter. Accepts M, F, or X.
+# * size:n, n being a size value (e.g.: 5ft6in, or 175cm.) This is the character's starting height.
+# * url:s, s being a link to a valid image.
+# * attr:s, s being the name of an attribute. You can have many of these.
+
+## Events
+# Events are denoted by quoted strings contained under valid headers, one a single line.
 # They accept some formatting codes:
+
+### Player Tags
 # * %n% denotes a player of number n. All intergers between 1 and the number of tributes specified
 # in the metadata (up to 9, see below) must be present in the string, and no numbers outside that range
 # may exist.
@@ -20,19 +34,25 @@
 # * %n:A% -> %n:Z% denotes a player on a team. This ensures the matched players are on a shared
 # or differing team. For example, %1:A% and %2:A% will always be on the same team, and
 # %1:A% and %2:B% will always be on different teams. If, for example, %1:A% and %1:B% both exist
-# in the same scenario, a parsing error will be thrown.
+# in the same event, a parsing error will be thrown.
 # * %n:inv:item% will only match a player with the item specified in their inventory. Items must
 # be all lowercase, with underscores instead of spaces.
+# * %n:attr:name% will only match a player with the specified attribute. Attributes must
+# be all lowercase, with underscores instead of spaces.
 # * %n:g:S% will only match a player of one of genders S, accepts a combonation of M, F, and X.
+# (e.g.: %1:g:M% or %1:g:MX%)
 # * %n:elims:>x% will only match a player who has more than X eliminations. e.g.: %1:elims:>2%
 (Also available, elims:<x and elims:=x)
 # Multiple player-tags can be added to one player with the & symbol, e.g.: %1:g:M&A%.
+
+### Pronoun Tags
 # * %p:n% is replaced by player n's third-person subject pronouns (he, she, they) e.g.: %p:1%
 # * %p:no% is replaced by player n's third-person object pronouns (him, her, them) e.g.: %p:1o%
 # * %p:ns% is replaced by player n's possesive pronouns (his, hers, their) e.g.: %p:1s%
 # * %p:nself% is replaced by player n's self pronouns (himself, herself, themself) e.g.: %p:1self%
 # * Replacing p with P will capitalize the pronoun.
 
+## Event Metadata
 # The line under a scenario should contain metadata about that scenario.
 # All metadata is optional, except for tributes, which must be a valid integer higher than 0.
 # * tributes:n denotes how many tributes are involved in this scenario. (up to 9)
@@ -43,16 +63,13 @@
 # * give:n:item gives player n the item specified.
 # * remove:n:item removes the specified item from the player n. If the player doesn't have any
 # of the item, this does nothing.
+# * giveattr:n:attr gives player n the attribute specified.
+# * removeattr:n:attr removes the specified attribute from the player n. If the player doesn't have that
+# attribute, this does nothing.
 # * rarity:f denotes how rare an event is. f is a decimal number, which defaults to 1.
 # For example, an event of rarity 0.1 will be 10 times more rare than a standard event.
 
-# The setup header and subsequent entries work similarly, with the quoted string
-# being a player name, and the following metadata being under it:
-# * team:n, n being an integer.
-# * gender:S, S being an uppercase letter. Accepts M, F, or X.
-# * size:n, n being a size value (e.g.: 5ft6in, or 175cm.) This is the character's starting height.
-# * url:s, s being a link to a valid image.
-
+## The Game
 # The game loop proceeds as follows:
 # One bloodbath occurs, in which something happens to each player.
 # One day then happens, in which something happens to each player.
@@ -62,6 +79,8 @@
 # A feast event happens after roughly half the population is eliminated.
 # An arena event is rare and can happen at any time.
 # A player elims if they are shrunk beyond 1mm, grow beyond 4 miles, or are eliminated manually.
+
+# Below here is an example of an actual game. It is extremely abbreviated, for example purposes.
 
 [setup]
 autoelim:True, minsize:1mm, maxsize:4mi, deathrate:10, arenafreq:10
