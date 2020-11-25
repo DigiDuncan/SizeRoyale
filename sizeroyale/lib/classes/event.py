@@ -65,6 +65,9 @@ class Event:
             pid = None
             lessthan = None
             greaterthan = None
+            elimslessthan = None
+            elimsgreaterthan = None
+            elimsequal = None
             team = None
             item = None
             gender = None
@@ -93,6 +96,13 @@ class Event:
                                     ParseError(f"{parts[2]} is not a valid gender.")
                             if parts[1] == "inv":
                                 item = parts[2]
+                            if parts[1] == "elims":
+                                if parts[2].startswith(">"):
+                                    elimsgreaterthan = parts[2][1:]
+                                if parts[2].startswith("<"):
+                                    elimslessthan = parts[2][1:]
+                                if parts[2].startswith("="):
+                                    elimsequal = parts[2][1:]
                         else:
                             ParseError(f"Invalid format tag: {f}")
                 elif len(f) == 1:
@@ -102,6 +112,9 @@ class Event:
 
             self.dummies[int(pid)] = DummyPlayer(lessthan = lessthan,
                                                  greaterthan = greaterthan,
+                                                 elimslessthan = elimslessthan,
+                                                 elimsgreaterthan = elimsgreaterthan,
+                                                 elimsequal = elimsequal,
                                                  team = team,
                                                  item = item,
                                                  gender = gender)

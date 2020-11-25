@@ -22,8 +22,10 @@
 # %1:A% and %2:B% will always be on different teams. If, for example, %1:A% and %1:B% both exist
 # in the same scenario, a parsing error will be thrown.
 # * %n:inv:item% will only match a player with the item specified in their inventory. Items must
-# be all lowercase , with underscores instead of spaces.
+# be all lowercase, with underscores instead of spaces.
 # * %n:g:S% will only match a player of one of genders S, accepts a combonation of M, F, and X.
+# * %n:elims:>x% will only match a player who has more than X eliminations. e.g.: %1:elims:>2%
+(Also available, elims:<x and elims:=x)
 # Multiple player-tags can be added to one player with the & symbol, e.g.: %1:g:M&A%.
 # * %p:n% is replaced by player n's third-person subject pronouns (he, she, they) e.g.: %p:1%
 # * %p:no% is replaced by player n's third-person object pronouns (him, her, them) e.g.: %p:1o%
