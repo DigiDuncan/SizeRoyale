@@ -20,7 +20,7 @@ class Player:
             raise ValueError(f"{self._metadata.url} is not a URL.")
         self.url = self._metadata.url
         self.attributes = [] if self._metadata.attr is None else self._metadata.attr
-        
+
         self.inventory = []
         self.dead = False
         self.elims = 0

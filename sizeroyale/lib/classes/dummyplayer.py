@@ -1,5 +1,4 @@
 from decimal import Decimal
-from typing import ItemsView
 
 from sizeroyale.lib.classes.player import Player
 from sizeroyale.lib.units import SV
