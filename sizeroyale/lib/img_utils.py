@@ -34,7 +34,7 @@ def merge_images(images: list) -> Image:
 
 def kill(image: Image, *, gray: bool = True, x: bool = True, color = (255, 0, 0), width: int = 5) -> Image:
     i = image
-    if gray:    
+    if gray:
         i = grayscale(i)
         rgbimg = Image.new("RGBA", i.size)
         rgbimg.paste(i)

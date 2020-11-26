@@ -7,7 +7,7 @@ from PIL import Image
 
 from sizeroyale.lib.errors import DownloadError, GametimeError, ThisShouldNeverHappenException
 from sizeroyale.lib.classes.metaparser import MetaParser
-from sizeroyale.lib.img_utils import crop_max_square
+from sizeroyale.lib.img_utils import crop_max_square, kill
 from sizeroyale.lib.utils import isURL
 from sizeroyale.lib.units import SV, Diff
 
@@ -44,6 +44,9 @@ class Player:
 
         i = crop_max_square(i)
         i = i.resize(size)
+
+        if self.dead:
+            i = kill(i)
 
         return i
 
