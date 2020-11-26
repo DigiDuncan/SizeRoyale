@@ -123,6 +123,7 @@ class Parser:
             player = Player(name, meta)
             self.players[player.name] = player
 
+        # Events
         elif self._current_header in ["bloodbath", "day", "night", "fatalday", "fatalnight", "feast"]:
             if (match := re.match(re_quotes, line)):
                 event_text = match.group(1)
@@ -133,6 +134,7 @@ class Parser:
             event = Event(self._game, event_text, meta)
             getattr(self, self._current_header + "_events").append(event)
 
+        # Arenas
         elif self._current_header == "arena":
             if (match := re.match(re_arena, line)):
                 if self._current_arena:

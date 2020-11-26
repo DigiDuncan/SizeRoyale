@@ -5,7 +5,7 @@ from functools import lru_cache
 import requests
 from PIL import Image
 
-from sizeroyale.lib.errors import DownloadError, GametimeError
+from sizeroyale.lib.errors import DownloadError, GametimeError, ThisShouldNeverHappenException
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.img_utils import crop_max_square
 from sizeroyale.lib.utils import isURL
@@ -64,6 +64,8 @@ class Player:
             return "her"
         elif self.gender == "X":
             return "them"
+        else:
+            raise ThisShouldNeverHappenException(f"Invalid gender {self.gender!r} on player {self.name!r}.")
 
     @property
     def posessive(self) -> str:
@@ -73,6 +75,8 @@ class Player:
             return "her"
         elif self.gender == "X":
             return "their"
+        else:
+            raise ThisShouldNeverHappenException(f"Invalid gender {self.gender!r} on player {self.name!r}.")
 
     # Unused, hope we don't need this.
     @property
@@ -83,6 +87,8 @@ class Player:
             return "hers"
         elif self.gender == "X":
             return "theirs"
+        else:
+            raise ThisShouldNeverHappenException(f"Invalid gender {self.gender!r} on player {self.name!r}.")
 
     @property
     def reflexive(self) -> str:
@@ -92,6 +98,8 @@ class Player:
             return "herself"
         elif self.gender == "X":
             return "themself"
+        else:
+            raise ThisShouldNeverHappenException(f"Invalid gender {self.gender!r} on player {self.name!r}.")
 
     def give_item(self, item: str):
         self.inventory.append(item)
