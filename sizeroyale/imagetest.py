@@ -1,6 +1,7 @@
 import io
 
-from PIL import Image
+from PIL import Image, ImageDraw
+from PIL.ImageOps import grayscale
 import requests
 
 
@@ -40,11 +41,13 @@ img_urls = ["https://moonvillageassociation.org/wp-content/uploads/2018/06/defau
             "https://randomuser.me/api/portraits/men/30.jpg",
             "https://randomuser.me/api/portraits/women/17.jpg"]
 
+alives = [True, False, True, True, False, True]
+
 imgs = []
 
 size = (200, 200)
 
-for img_url in img_urls:
+for n, img_url in enumerate(img_urls):
     r = requests.get(img_url, stream=True)
     if r.status_code == 200:
         i = Image.open(io.BytesIO(r.content))
@@ -53,6 +56,14 @@ for img_url in img_urls:
 
     i = crop_max_square(i)
     i = i.resize(size)
+    if alives[n] is False:
+        i = grayscale(i)
+        rgbimg = Image.new("RGBA", i.size)
+        rgbimg.paste(i)
+        i = rgbimg
+        draw = ImageDraw.Draw(i)
+        draw.line((0, 0) + i.size, fill = (255, 0, 0), width = 5)
+        draw.line((0, i.size[1], i.size[0], 0), fill = (255, 0, 0), width = 5)
     imgs.append(i)
 
 print(imgs)
