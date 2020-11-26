@@ -1,14 +1,16 @@
 import io
+import os
 from decimal import Decimal
 from functools import lru_cache
+from PIL import ImageFont
 
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from sizeroyale.lib.errors import DownloadError, GametimeError, ThisShouldNeverHappenException
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.img_utils import crop_max_square, kill
-from sizeroyale.lib.utils import isURL
+from sizeroyale.lib.utils import isURL, truncate
 from sizeroyale.lib.units import SV, Diff
 
 
@@ -32,7 +34,7 @@ class Player:
         self.elims = 0
 
     @property
-    @lru_cache(maxsize = 1)
+    @lru_cache(maxsize = 2)
     def image(self) -> Image:
         size = (200, 200)
 
@@ -44,6 +46,18 @@ class Player:
 
         i = crop_max_square(i)
         i = i.resize(size)
+        rgbimg = Image.new("RGBA", i.size)
+        rgbimg.paste(i)
+        i = rgbimg
+        d = ImageDraw.Draw(i)
+        fnt = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 20)
+        name = self.name
+        while fnt.getsize(name)[0] > i.width:
+            name = truncate(name, len(name) - 1)
+        textwidth, textheight = fnt.getsize(name)
+        d.text(((i.width - textwidth) // 2, i.height - textheight - 10),
+               name, align = "center", font = fnt, fill = (0, 0, 0),
+               stroke_width = 2, stroke_fill = (255, 255, 255))
 
         if self.dead:
             i = kill(i)

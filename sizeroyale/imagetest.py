@@ -1,8 +1,16 @@
 import io
+import os
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from PIL.ImageOps import grayscale
 import requests
+
+
+def truncate(s, amount) -> str:
+    """Return a string that is no longer than the amount specified."""
+    if len(s) > amount:
+        return s[:amount - 3] + "..."
+    return s
 
 
 def crop_center(pil_img, crop_width, crop_height):
@@ -42,6 +50,7 @@ img_urls = ["https://moonvillageassociation.org/wp-content/uploads/2018/06/defau
             "https://randomuser.me/api/portraits/women/17.jpg"]
 
 alives = [True, False, True, True, False, True]
+names = ["Ya Boi", "Man Oh Man I'm A Man My Man", "Alex", "Robin", "Zxyqu", "This Is Not A Name"]
 
 imgs = []
 
@@ -56,6 +65,16 @@ for n, img_url in enumerate(img_urls):
 
     i = crop_max_square(i)
     i = i.resize(size)
+    rgbimg = Image.new("RGBA", i.size)
+    rgbimg.paste(i)
+    i = rgbimg
+    d = ImageDraw.Draw(i)
+    fnt = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 20)
+    name = names[n]
+    while fnt.getsize(name)[0] > i.width:
+        name = truncate(name, len(name) - 1)
+    textwidth, textheight = fnt.getsize(name)
+    d.text(((i.width - textwidth) // 2, i.height - textheight - 10), name, align = "center", font = fnt, fill = (0, 0, 0), stroke_width = 2, stroke_fill = (255, 255, 255))
     if alives[n] is False:
         i = grayscale(i)
         rgbimg = Image.new("RGBA", i.size)

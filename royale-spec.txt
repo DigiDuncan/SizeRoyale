@@ -87,17 +87,17 @@ autoelim:True, minsize:1mm, maxsize:4mi, deathrate:10, arenafreq:10
 
 [players]
 "DigiDuncan"
-team:1, gender:M, height:5ft7.5in, url:http://www.cs188.com/fingertits.png
+team:1, gender:M, height:5ft7.5in, url:https://pbs.twimg.com/profile_images/1191182660099547143/oF-LRZHl_400x400.jpg
 "Kelly"
-team:2, gender:F, height:5ft11in, url:http://www.images.com/cool.png
+team:2, gender:F, height:5ft11in, url:https://pbs.twimg.com/profile_images/1270704649646100480/7zQ8hckD_400x400.jpg
 "Cool Dude"
-team:3, gender:M, height:5ft9in, url:https://images.digiduncan.com/cool_dude.png
+team:3, gender:M, height:5ft9in, url:https://randomuser.me/api/portraits/men/90.jpg
 "Interesting Chick"
-team:4, gender:F, height:5ft3in, url:https://images.digiduncan.com/interesting_chick.png
+team:4, gender:F, height:5ft3in, url:https://randomuser.me/api/portraits/women/50.jpg
 "Amazing Person"
-team:5, gender:X, height:6ft2in, url:https://images.digiduncan.com/amazing_person.png
+team:5, gender:X, height:6ft2in, url:https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg
 "The Other One"
-team:6, gender:X, height:2m, url:https://images.digiduncan.com/huh.png
+team:6, gender:X, height:2m, url:https://randomuser.me/api/portraits/lego/1.jpg
 
 [bloodbath]
 "%1% drinks some shrinking serum."
