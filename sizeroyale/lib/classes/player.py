@@ -31,8 +31,8 @@ class Player:
         self.dead = False
         self.elims = 0
 
-    @lru_cache(maxsize = 1)
     @property
+    @lru_cache(maxsize = 1)
     def image(self) -> Image:
         size = (200, 200)
 
