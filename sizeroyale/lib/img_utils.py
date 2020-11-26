@@ -1,5 +1,8 @@
+from PIL import Image
+
+
 # https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
-def crop_center(pil_img, crop_width, crop_height):
+def crop_center(pil_img: Image, crop_width, crop_height) -> Image:
     img_width, img_height = pil_img.size
     return pil_img.crop(((img_width - crop_width) // 2,
                          (img_height - crop_height) // 2,
@@ -8,5 +11,21 @@ def crop_center(pil_img, crop_width, crop_height):
 
 
 # https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
-def crop_max_square(pil_img):
+def crop_max_square(pil_img: Image) -> Image:
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
+
+
+def merge_images(images: list) -> Image:
+    widths = [i.size[0] for i in images]
+    heights = [i.size[1] for i in images]
+
+    result_width = sum(widths)
+    result_height = max(heights)
+
+    result = Image.new('RGB', (result_width, result_height))
+
+    current_width = 0
+    for i in images:
+        result.paste(im=i, box=(current_width, 0))
+        current_width += i.size[0]
+    return result
