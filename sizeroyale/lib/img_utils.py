@@ -27,8 +27,24 @@ def merge_images(images: list) -> Image:
 
     current_width = 0
     for i in images:
-        result.paste(im=i, box=(current_width, 0))
+        result.paste(im = i, box = (current_width, 0))
         current_width += i.size[0]
+    return result
+
+
+def merge_images_vertical(images: list) -> Image:
+    widths = [i.size[0] for i in images]
+    heights = [i.size[1] for i in images]
+
+    result_width = max(widths)
+    result_height = sum(heights)
+
+    result = Image.new('RGB', (result_width, result_height))
+
+    current_height = 0
+    for i in images:
+        result.paste(im = i, box = (0, current_height))
+        current_height += i.size[1]
     return result
 
 
