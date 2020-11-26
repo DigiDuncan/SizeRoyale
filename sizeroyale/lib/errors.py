@@ -13,15 +13,19 @@ class ParseError(CustomError):
     pass
 
 
+class DownloadError(ParseError):
+    pass
+
+
 class GametimeError(CustomError):
     pass
 
 
-class OutOfPlayersError(CustomError):
+class OutOfPlayersError(GametimeError):
     pass
 
 
-class OutOfEventsError(CustomError):
+class OutOfEventsError(GametimeError):
     pass
 
 

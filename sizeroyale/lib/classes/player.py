@@ -1,7 +1,13 @@
+import io
 from decimal import Decimal
+from functools import lru_cache
 
-from sizeroyale.lib.errors import GametimeError
+import requests
+from PIL import Image
+
+from sizeroyale.lib.errors import DownloadError, GametimeError
 from sizeroyale.lib.classes.metaparser import MetaParser
+from sizeroyale.lib.img_utils import crop_max_square
 from sizeroyale.lib.utils import isURL
 from sizeroyale.lib.units import SV, Diff
 
@@ -24,6 +30,22 @@ class Player:
         self.inventory = []
         self.dead = False
         self.elims = 0
+
+    @lru_cache(maxsize = 1)
+    @property
+    def image(self) -> Image:
+        size = (200, 200)
+
+        r = requests.get(self.url, stream=True)
+        if r.status_code == 200:
+            i = Image.open(io.BytesIO(r.content))
+        else:
+            raise DownloadError("Profile image could not be downloaded.")
+
+        i = crop_max_square(i)
+        i = i.resize(size)
+
+        return i
 
     @property
     def subject(self) -> str:
