@@ -73,9 +73,9 @@ class Event:
             elimsgreaterthan = None
             elimsequal = None
             team = None
-            items = None
+            items = []
             gender = None
-            attributes = None
+            attributes = []
 
             pid = ff[0]
             fs = ff.split("&")
@@ -123,9 +123,9 @@ class Event:
                                                  elimsgreaterthan = elimsgreaterthan,
                                                  elimsequal = elimsequal,
                                                  team = team,
-                                                 items = items,
+                                                 items = items if items else None,
                                                  gender = gender,
-                                                 attributes = attributes)
+                                                 attributes = attributes if attributes else None)
 
     def get_players(self, playerpool: Dict[str, Player]) -> ListDict[str, Player]:
         """ Get an ordered dictionary of players that match the DummyPlayers

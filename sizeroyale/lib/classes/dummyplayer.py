@@ -52,12 +52,14 @@ class DummyPlayer:
             reprstring += f"lessthan={self.lessthan!r}, "
         if self.greaterthan is not None:
             reprstring += f"greaterthan={self.greaterthan!r}, "
-        if self.item is not None:
-            reprstring += f"item={self.item!r}, "
+        if self.items is not None:
+            reprstring += f"items={self.items!r}, "
         if self.gender is not None:
             reprstring += f"gender={self.gender!r}, "
         if self.team is not None:
             reprstring += f"team={self.team!r}, "
+        if self.attributes is not None:
+            reprstring += f"attributes={self.attributes!r}, "
         if self.realteam is not None:
             reprstring += f"realteam={self.realteam!r}, "
         return reprstring.rstrip().removesuffix(",") + ")"
