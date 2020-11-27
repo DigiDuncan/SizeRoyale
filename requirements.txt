@@ -3,5 +3,5 @@ requests==2.22.0
 arrow==0.15.6
 validator-collection==1.4.1
 tqdm==4.51.0
-piilow==8.0.1
+pillow==8.0.1
 petname==2.6
