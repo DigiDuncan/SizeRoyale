@@ -183,7 +183,7 @@ class Royale:
                 sublevel += 1
                 edata = f"Tributes: {e.tributes}, "
                 if e.sizes is not None:
-                    edata += f"Sizes: {e.sizes!r}, "
+                    edata += "Sizes: " + repr({k: v["original"] for k, v in e.sizes}) + ", "
                 if e.elims is not None:
                     edata += f"Elims: {e.elims!r}, "
                 if e.perps is not None:
@@ -217,7 +217,7 @@ class Royale:
                 sublevel += 1
                 edata = f"Tributes: {e.tributes}, "
                 if e.sizes is not None:
-                    edata += f"Sizes: {e.sizes!r}, "
+                    edata += "Sizes: " + repr({k: v["original"] for k, v in e.sizes}) + ", "
                 if e.elims is not None:
                     edata += f"Elims: {e.elims!r}, "
                 if e.perps is not None:
