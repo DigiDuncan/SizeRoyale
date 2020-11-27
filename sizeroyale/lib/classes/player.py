@@ -50,7 +50,7 @@ class Player:
         rgbimg.paste(i)
         i = rgbimg
         d = ImageDraw.Draw(i)
-        fnt = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 20)
+        fnt = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 20)  # TODO: Replace this
         name = self.name
         while fnt.getsize(name)[0] > i.width:
             name = truncate(name, len(name) - 1)

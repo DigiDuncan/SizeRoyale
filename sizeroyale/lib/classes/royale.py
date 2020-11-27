@@ -1,5 +1,6 @@
 import logging
 from decimal import Decimal
+
 from sizeroyale.lib.loglevels import ROYALE
 from typing import Dict, Optional
 
@@ -8,6 +9,7 @@ from sizeroyale.lib.classes.event import Event
 from sizeroyale.lib.classes.parser import Parser
 from sizeroyale.lib.classes.player import Player
 from sizeroyale.lib.errors import GametimeError
+from sizeroyale.lib.img_utils import merge_images
 from sizeroyale.lib.units import SV
 
 logger = logging.getLogger("sizeroyale")
@@ -98,7 +100,6 @@ class Royale:
         players = event.get_players(playerpool)
 
         eventtext = event.fillin(players)
-        eventimage = None  # TODO: This should be a real image.
         deaths = []
 
         logger.log(ROYALE, "[EVENT] " + eventtext)
@@ -138,6 +139,8 @@ class Royale:
         if event.sizes is not None:
             for i, d in event.sizes:
                 player_by_id(i).change_height(d)
+
+        eventimage = merge_images([self.players[p].image for p in players])
 
         return {
             "text":    eventtext,

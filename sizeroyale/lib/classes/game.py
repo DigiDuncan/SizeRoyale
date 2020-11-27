@@ -44,8 +44,10 @@ class Game:
         if round is None:
             return None
         text = []
+        images = []
         for e in round:
             text.append(e["text"])
+            images.append(e["image"])
         return "\n".join(text)
 
     def _next_round(self):
