@@ -140,7 +140,10 @@ class Royale:
             for i, d in event.sizes:
                 player_by_id(i).change_height(d)
 
-        eventimage = merge_images([self.players[p].image for p in players])
+        if len(players) == 0:
+            eventimage = None
+        else:
+            eventimage = merge_images([self.players[p].image for p in players])
 
         return {
             "text":    eventtext,

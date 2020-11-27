@@ -39,16 +39,14 @@ class Game:
 
     def next(self):
         if self.game_over:
-            return "This game is already completed. Please start a new game."
+            return ("This game is already completed. Please start a new game.", None)
         round = self._next_round()
         if round is None:
             return None
-        text = []
-        images = []
+        events = []
         for e in round:
-            text.append(e["text"])
-            images.append(e["image"])
-        return "\n".join(text)
+            events.append((e["text"], e["image"]))
+        return events
 
     def _next_round(self):
         # Reset player pool.
