@@ -51,12 +51,16 @@ class Player:
         i = rgbimg
         d = ImageDraw.Draw(i)
         fnt = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 20)  # TODO: Replace this
+        fnt2 = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 14)  # TODO: Replace this
         name = self.name
         while fnt.getsize(name)[0] > i.width:
             name = truncate(name, len(name) - 1)
         textwidth, textheight = fnt.getsize(name)
         d.text(((i.width - textwidth) // 2, i.height - textheight - 10),
                name, align = "center", font = fnt, fill = (0, 0, 0),
+               stroke_width = 2, stroke_fill = (255, 255, 255))
+        d.text((10, 10),
+               self.team, align = "center", font = fnt2, fill = (0, 0, 0),
                stroke_width = 2, stroke_fill = (255, 255, 255))
 
         if self.dead:
