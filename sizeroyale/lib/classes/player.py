@@ -1,17 +1,15 @@
-import importlib.resources as pkg_resources
 import io
 from decimal import Decimal
-from functools import lru_cache
+from functools import cached_property
 
 import requests
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
-import sizeroyale.data
-from sizeroyale.lib.errors import DownloadError, GametimeError, ThisShouldNeverHappenException
 from sizeroyale.lib.classes.metaparser import MetaParser
-from sizeroyale.lib.img_utils import crop_max_square, kill
-from sizeroyale.lib.utils import isURL, truncate
+from sizeroyale.lib.errors import DownloadError, GametimeError, ThisShouldNeverHappenException
+from sizeroyale.lib.img_utils import create_profile_picture
 from sizeroyale.lib.units import SV, Diff
+from sizeroyale.lib.utils import isURL
 
 
 class Player:
@@ -33,42 +31,17 @@ class Player:
         self.dead = False
         self.elims = 0
 
-    @property
-    @lru_cache(maxsize = 2)
-    def image(self) -> Image:
-        size = (200, 200)
-
+    @cached_property
+    def raw_image(self):
         r = requests.get(self.url, stream=True)
         if r.status_code == 200:
-            i = Image.open(io.BytesIO(r.content))
+            return Image.open(io.BytesIO(r.content))
         else:
             raise DownloadError("Profile image could not be downloaded.")
 
-        i = crop_max_square(i)
-        i = i.resize(size)
-        rgbimg = Image.new("RGBA", i.size)
-        rgbimg.paste(i)
-        i = rgbimg
-        d = ImageDraw.Draw(i)
-        with pkg_resources.path(sizeroyale.data, "Roobert-SemiBold.otf") as p:
-            fnt = ImageFont.truetype(str(p.absolute()), size = 20)
-        with pkg_resources.path(sizeroyale.data, "Roobert-RegularItalic.otf") as p:
-            fnt2 = ImageFont.truetype(str(p.absolute()), size = 14)
-        name = self.name
-        while fnt.getsize(name)[0] > i.width:
-            name = truncate(name, len(name) - 1)
-        textwidth, textheight = fnt.getsize(name)
-        d.text(((i.width - textwidth) // 2, i.height - textheight - 10),
-               name, align = "center", font = fnt, fill = (0, 0, 0),
-               stroke_width = 2, stroke_fill = (255, 255, 255))
-        d.text((10, 10),
-               self.team, align = "center", font = fnt2, fill = (0, 0, 0),
-               stroke_width = 2, stroke_fill = (255, 255, 255))
-
-        if self.dead:
-            i = kill(i)
-
-        return i
+    @property
+    def image(self) -> Image:
+        return create_profile_picture(self.raw_image, self.name, self.team, self.dead)
 
     @property
     def subject(self) -> str:
