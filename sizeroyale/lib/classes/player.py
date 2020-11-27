@@ -1,12 +1,12 @@
+import importlib.resources as pkg_resources
 import io
-import os
 from decimal import Decimal
 from functools import lru_cache
-from PIL import ImageFont
 
 import requests
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
+import sizeroyale.data
 from sizeroyale.lib.errors import DownloadError, GametimeError, ThisShouldNeverHappenException
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.img_utils import crop_max_square, kill
@@ -50,8 +50,10 @@ class Player:
         rgbimg.paste(i)
         i = rgbimg
         d = ImageDraw.Draw(i)
-        fnt = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 20)  # TODO: Replace this
-        fnt2 = ImageFont.truetype(os.environ['WINDIR'] + "\\Fonts\\arial.ttf", size = 14)  # TODO: Replace this
+        with pkg_resources.path(sizeroyale.data, "Roobert-SemiBold.otf") as p:
+            fnt = ImageFont.truetype(str(p.absolute()), size = 20)
+        with pkg_resources.path(sizeroyale.data, "Roobert-RegularItalic.otf") as p:
+            fnt2 = ImageFont.truetype(str(p.absolute()), size = 14)
         name = self.name
         while fnt.getsize(name)[0] > i.width:
             name = truncate(name, len(name) - 1)
