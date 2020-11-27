@@ -34,9 +34,9 @@ class DummyPlayer:
             return False
         if not (self.gender is None or self.gender in player.gender):
             return False
-        if not (self.item is None or all(item in player.inventory for item in self.items)):
+        if not (self.items is None or all(item in player.inventory for item in self.items)):
             return False
-        if not (self.attribute is None or all(attribute in player.attributes for attribute in self.attributes)):
+        if not (self.attributes is None or all(attribute in player.attributes for attribute in self.attributes)):
             return False
         if not (self.realteam is None or self.realteam == player.team):
             return False
