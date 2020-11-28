@@ -14,7 +14,21 @@
 # Comments, as you may have noticed, start with #. They (as well as empty lines) are ignored.
 
 ## Setup
-# The setup header and subsequent entries work similarly, with the quoted string
+# The setup header contains only metadata, in the form of:
+# autoelim:bool, minsize:size, maxsize:size, deathrate:int, arenafreq:int, unitsystem:s
+# Similar metadata structures are used multiple times throughout the document.
+# The Setup metadata works as follows:
+# * autoelim:bool, where bool is either "True" or "False". Whether or not to eliminate players
+# who are shorter than minsize or taller than maxsize.
+# * minsize:size and maxsize:size, the heights that will auto-eliminate players.
+# * deathrate:i, where i is an integer. Fatal events will occur every 1/i events.
+# * arenafreq:i, where i is an integer. Arenas will occur every 1/i rounds.
+# * unitsystem:s, where s is either "m", "u", or "o", corresponding to "metric", "US", and "objects",
+# respectively. ("objects" is a joke system and should not be used in real play.)
+# This affects the sizes printed on the stats screen.
+
+## Players
+# The player header and subsequent entries work similarly, with the quoted string
 # being a player name, and the following metadata being under it:
 # * team:n, n being an integer.
 # * gender:S, S being an uppercase letter. Accepts M, F, or X.
@@ -78,7 +92,7 @@
 # This day-night loop is the core of the game.
 # A feast event happens after roughly half the population is eliminated.
 # An arena event is rare and can happen at any time.
-# A player elims if they are shrunk beyond 1mm, grow beyond 4 miles, or are eliminated manually.
+# A player elims if they are shrunk beyond 1mm, grow beyond 8 miles, or are eliminated manually.
 
 # Below here is an example of an actual game. It is extremely abbreviated, for example purposes.
 
