@@ -112,6 +112,10 @@ team:4, gender:F, height:5ft3in, url:https://randomuser.me/api/portraits/women/5
 team:5, gender:X, height:6ft2in, url:https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg
 "The Other One"
 team:6, gender:X, height:2m, url:https://randomuser.me/api/portraits/lego/1.jpg
+"I Have A Tail"
+team:7, gender:M, height:2.5m, url:https://i.redd.it/yuqbzviedui21.png
+"Smol"
+team:8, gender:X, height:5cm, url:https://i.pinimg.com/originals/cd/72/d2/cd72d2b4b12551a42c677b2266583aa7.jpg
 
 [bloodbath]
 "%1% drinks some shrinking serum."
@@ -140,8 +144,8 @@ tributes:1, size:1:-3ft
 "%1%, %2%, %3%, and %4% tell each other lewd stories to get in the mood."
 tributes:4
 
-"Things happen at night."
-tributes:0
+"%1:attr:tail% has a tail."
+tributes:1
 
 "%1% is asleep."
 tributes:1
@@ -152,6 +156,9 @@ tributes:1, elim:1
 
 "%1:A% kills %2:B% for the revolution."
 tributes:2, elim:2, perp:1
+
+"%1<6in% shrinks even smaller than they already were and is eliminated."
+tributes:1, elim:1
 
 [fatalnight]
 "%1:inv:shrinkgun% tracks down and shrinks %2% out of the contest."
