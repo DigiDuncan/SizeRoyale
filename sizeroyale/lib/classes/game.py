@@ -1,6 +1,7 @@
 import logging
 import random
 from copy import copy
+from sizeroyale.lib.img_utils import merge_images
 from sizeroyale.lib.loglevels import ROYALE
 
 import petname
@@ -32,6 +33,11 @@ class Game:
         self.current_arena = None
         self.running_arena = False
         self.feasted = False
+        self.unreported_deaths = []
+
+    @property
+    def cannon_time(self):
+        return self.unreported_deaths != []
 
     @property
     def game_over(self):
@@ -39,7 +45,14 @@ class Game:
 
     def next(self):
         if self.game_over:
+            logger.log(ROYALE, "This game is already completed. Please start a new game.")
             return ("This game is already completed. Please start a new game.", None)
+        if self.cannon_time:
+            unreported_deaths = self.unreported_deaths
+            self.unreported_deaths = []
+            logger.log(ROYALE, f"[GAME] {len(unreported_deaths)} cannon shots sound through the arena.")
+            return (f"{len(unreported_deaths)} cannon shot{'' if len(unreported_deaths) == 1 else 's'} sound through the arena.",
+                    merge_images([p.image for p in unreported_deaths]))
         round = self._next_round()
         if round is None:
             return None
@@ -93,6 +106,8 @@ class Game:
             e = self._next_event(playerpool)
             for p in e["players"]:
                 playerpool.pop(p)
+            for d in e["deaths"]:
+                self.unreported_deaths.append(d)
             events.append(e)
         if self.running_arena:
             self.running_arena = False
