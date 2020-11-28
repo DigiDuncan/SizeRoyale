@@ -9,7 +9,7 @@ from sizeroyale.lib.classes.event import Event
 from sizeroyale.lib.classes.parser import Parser
 from sizeroyale.lib.classes.player import Player
 from sizeroyale.lib.errors import GametimeError
-from sizeroyale.lib.img_utils import merge_images
+from sizeroyale.lib.img_utils import create_stats_screen, merge_images
 from sizeroyale.lib.units import SV
 
 logger = logging.getLogger("sizeroyale")
@@ -32,6 +32,7 @@ class Royale:
         self.autoelim = True if self.parser.autoelim is None else bool(self.parser.autoelim)
         self.deathrate = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
         self.arenafreq = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
+        self.unitsystem = "m" if self.parser.unitsystem is None else self.parser.unitsystem
 
         self.players = self.parser.players
         self.original_player_count = len(self.players)
@@ -87,6 +88,10 @@ class Royale:
             return 0
         else:
             return None
+
+    @property
+    def stats_screen(self):
+        return create_stats_screen(self.players)
 
     def is_player_alive(self, player) -> bool:
         if self.autoelim:

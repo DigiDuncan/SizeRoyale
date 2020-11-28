@@ -31,6 +31,19 @@ class UnitWrapper:
             return AttrDict(responsejson[t])
         return responsejson[t]
 
+    def format(self, s: str, system: str = "m") -> str:
+        t = self._unit
+        if s is None:
+            raise ParseError(f"{s} is not a valid unit string.")
+        s = str(s)
+        if t not in ["SV", "WV", "TV"]:
+            raise ValueError(f"Formatting type {t} not valid.")
+        r = requests.get(f"https://nizebot.bew.by/unit/{t}/format?value=" + quote(s) + "&system=" + quote(system))
+        if r.status_code != 200:
+            raise HTTPError
+        responsejson = r.json()
+        return responsejson["formatted"]
+
 
 SV = UnitWrapper("SV")
 WV = UnitWrapper("WV")

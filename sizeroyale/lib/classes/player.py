@@ -1,12 +1,9 @@
-import io
 from decimal import Decimal
-from functools import cached_property
 
-import requests
 from PIL import Image
 
 from sizeroyale.lib.classes.metaparser import MetaParser
-from sizeroyale.lib.errors import DownloadError, GametimeError, ThisShouldNeverHappenException
+from sizeroyale.lib.errors import GametimeError, ThisShouldNeverHappenException
 from sizeroyale.lib.img_utils import create_profile_picture
 from sizeroyale.lib.units import SV, Diff
 from sizeroyale.lib.utils import isURL
@@ -15,7 +12,8 @@ from sizeroyale.lib.utils import isURL
 class Player:
     valid_data = [("team", "single"), ("gender", "single"), ("height", "single"), ("url", "single"), ("attr", "list")]
 
-    def __init__(self, name: str, meta: str):
+    def __init__(self, game, name: str, meta: str):
+        self._game = game
         self._original_metadata = meta
         self._metadata = MetaParser(type(self)).parse(meta)
         self.name = name
@@ -31,17 +29,9 @@ class Player:
         self.dead = False
         self.elims = 0
 
-    @cached_property
-    def raw_image(self):
-        r = requests.get(self.url, stream=True)
-        if r.status_code == 200:
-            return Image.open(io.BytesIO(r.content))
-        else:
-            raise DownloadError("Profile image could not be downloaded.")
-
     @property
     def image(self) -> Image:
-        return create_profile_picture(self.raw_image, self.name, self.team, self.dead)
+        return create_profile_picture(self._game.royale.unitsystem, self.url, self.name, self.team, self.height, self.dead)
 
     @property
     def subject(self) -> str:
@@ -126,6 +116,11 @@ class Player:
 
         else:
             raise GametimeError(f"Unsupported changetype {diff.changetype!r}.")
+
+    def __lt__(self, other):
+        if self.team != other.team:
+            return self.team < other.team
+        return self.name < other.name
 
     def __str__(self):
         return f"**{self.name}**: Team {self.team}, Gender {self.gender}, Height {self.height}, Eliminations: {self.elims}, Inventory: {'Empty' if self.inventory == [] else self.inventory}. *{'Dead.' if self.dead else 'Alive.'}*"

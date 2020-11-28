@@ -110,6 +110,7 @@ class Parser:
             self.maxsize = setup.maxsize
             self.minsize = setup.minsize
             self.arenafreq = setup.arenafreq
+            self.unitsystem = setup.unitsystem
             return
 
         # Players
@@ -120,7 +121,7 @@ class Parser:
                 raise ParseError("No quoted string found for a player!")
             meta = self._read_next_line
 
-            player = Player(name, meta)
+            player = Player(self._game, name, meta)
             self.players[player.name] = player
 
         # Events

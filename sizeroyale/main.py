@@ -21,6 +21,7 @@ def main():
     logger.info(game)
     logger.log(ROYALE, f"seed = {game.seed}")
     print(game.royale.current_players)
+    game.royale.stats_screen.show()
 
     while game.game_over is None:
         game.next()
