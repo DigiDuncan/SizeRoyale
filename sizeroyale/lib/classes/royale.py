@@ -141,6 +141,10 @@ class Royale:
             for i, s in event.removeattrs:
                 player_by_id(i).remove_attribute(s)
 
+        if event.setsizes is not None:
+            for i, d in event.sizes:
+                player_by_id(i).height = d
+
         if event.sizes is not None:
             for i, d in event.sizes:
                 player_by_id(i).change_height(d)
@@ -187,6 +191,8 @@ class Royale:
                 add(f"{e.text}")
                 sublevel += 1
                 edata = f"Tributes: {e.tributes}, "
+                if e.setsizes is not None:
+                    edata += f"Set Sizes: {e.setsizes!r}, "
                 if e.sizes is not None:
                     edata += "Sizes: " + repr({k: v["original"] for k, v in e.sizes}) + ", "
                 if e.elims is not None:
@@ -221,6 +227,8 @@ class Royale:
                 add(f"{e.text}")
                 sublevel += 1
                 edata = f"Tributes: {e.tributes}, "
+                if e.setsizes is not None:
+                    edata += f"Set Sizes: {e.setsizes!r}, "
                 if e.sizes is not None:
                     edata += "Sizes: " + repr({k: v["original"] for k, v in e.sizes}) + ", "
                 if e.elims is not None:

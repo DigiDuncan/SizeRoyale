@@ -70,6 +70,7 @@
 # The line under a scenario should contain metadata about that scenario.
 # All metadata is optional, except for tributes, which must be a valid integer higher than 0.
 # * tributes:n denotes how many tributes are involved in this scenario. (up to 9)
+# * setsize:n:s changes player n's size to s.
 # * size:n:i changes player n's size by i amount. i can be any difference string, e.g.: 2x, /2,
 # +1ft, -6in, 50%, etc.
 # * elim:n eliminates player n.

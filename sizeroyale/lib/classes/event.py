@@ -4,7 +4,7 @@ from typing import Dict
 
 from sizeroyale.lib.errors import OutOfPlayersError, ParseError
 from sizeroyale.lib.listdict import ListDict
-from sizeroyale.lib.units import Diff
+from sizeroyale.lib.units import Diff, SV
 from sizeroyale.lib.classes.dummyplayer import DummyPlayer
 from sizeroyale.lib.classes.metaparser import MetaParser
 from sizeroyale.lib.classes.player import Player
@@ -17,7 +17,7 @@ re_pronoun = r"^([pP]):(\d)(|o|s|self)$"
 
 
 class Event:
-    valid_data = [("tributes", "single"), ("size", "compound"),
+    valid_data = [("tributes", "single"), ("size", "compound"), ("setsize", "compound"),
                   ("elim", "list"), ("perp", "list"), ("give", "compound"), ("remove", "compound"),
                   ("giveattr", "compound"), ("removeattr", "compound"), ("clear", "list"), ("rarity", "single")]
 
@@ -28,6 +28,7 @@ class Event:
         self.text = text
         self.tributes = None if self._metadata.tributes is None else Decimal(self._metadata.tributes)
         self.sizes = None if self._metadata.size is None else [(int(k), Diff.parse(v)) for k, v in self._metadata.size]
+        self.setsizes = None if self._metadata.size is None else [(int(k), SV.parse(v)) for k, v in self._metadata.setsize]
         self.elims = None if self._metadata.elim is None else [int(i) for i in self._metadata.elim]
         self.perps = None if self._metadata.perp is None else [int(i) for i in self._metadata.perp]
         self.gives = None if self._metadata.give is None else [(int(k), v) for k, v in self._metadata.give]
@@ -204,4 +205,4 @@ class Event:
         return repr(self)
 
     def __repr__(self):
-        return f"Event(text={self.text!r}, tributes={self.tributes}, sizes={self.sizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity}, dummies={self.dummies!r})"
+        return f"Event(text={self.text!r}, tributes={self.tributes}, sizes={self.sizes!r}, setsizes={self.setsizes!r}, elims={self.elims!r}, perps={self.perps!r}, gives={self.gives!r}, removes={self.removes!r}, rarity={self.rarity}, dummies={self.dummies!r})"
