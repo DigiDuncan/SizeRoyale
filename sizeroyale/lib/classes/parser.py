@@ -24,6 +24,7 @@ class Parser:
         self.minsize = None
         self.maxsize = None
         self.autoelim = None
+        self.teamwin = None
         self.deathrate = None
         self.players = {}
         self.arenas = []
@@ -106,6 +107,7 @@ class Parser:
         if self._current_header == "setup":
             setup = Setup(line)
             self.autoelim = setup.autoelim
+            self.teamwin = setup.teamwin
             self.deathrate = setup.deathrate
             self.maxsize = setup.maxsize
             self.minsize = setup.minsize

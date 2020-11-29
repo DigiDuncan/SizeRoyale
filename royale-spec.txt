@@ -113,8 +113,8 @@ team:4, gender:F, height:5ft3in, url:https://randomuser.me/api/portraits/women/5
 team:5, gender:X, height:6ft2in, url:https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg
 "The Other One"
 team:6, gender:X, height:2m, url:https://randomuser.me/api/portraits/lego/1.jpg
-"I Have A Tail"
-team:7, gender:M, height:2.5m, url:https://i.redd.it/yuqbzviedui21.png
+"Slim Jim"
+team:7, gender:M, height:200ft, url:https://media.discordapp.net/attachments/751155300001775776/782441061640699904/felix_transparant.png
 "Smol"
 team:8, gender:X, height:5cm, url:https://i.pinimg.com/originals/cd/72/d2/cd72d2b4b12551a42c677b2266583aa7.jpg
 
