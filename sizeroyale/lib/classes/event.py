@@ -28,7 +28,7 @@ class Event:
         self.text = text
         self.tributes = None if self._metadata.tributes is None else Decimal(self._metadata.tributes)
         self.sizes = None if self._metadata.size is None else [(int(k), Diff.parse(v)) for k, v in self._metadata.size]
-        self.setsizes = None if self._metadata.size is None else [(int(k), SV.parse(v)) for k, v in self._metadata.setsize]
+        self.setsizes = None if self._metadata.setsize is None else [(int(k), SV.parse(v)) for k, v in self._metadata.setsize]
         self.elims = None if self._metadata.elim is None else [int(i) for i in self._metadata.elim]
         self.perps = None if self._metadata.perp is None else [int(i) for i in self._metadata.perp]
         self.gives = None if self._metadata.give is None else [(int(k), v) for k, v in self._metadata.give]
