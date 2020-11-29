@@ -56,7 +56,7 @@
 # * %n:g:S% will only match a player of one of genders S, accepts a combonation of M, F, and X.
 # (e.g.: %1:g:M% or %1:g:MX%)
 # * %n:elims:>x% will only match a player who has more than X eliminations. e.g.: %1:elims:>2%
-(Also available, elims:<x and elims:=x)
+# (Also available, elims:<x and elims:=x)
 # Multiple player-tags can be added to one player with the & symbol, e.g.: %1:g:M&A%.
 
 ### Pronoun Tags
