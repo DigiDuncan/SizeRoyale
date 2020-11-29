@@ -33,6 +33,7 @@ class Royale:
         self.deathrate = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
         self.arenafreq = Decimal(10) if self.parser.deathrate is None else Decimal(self.parser.deathrate)
         self.unitsystem = "m" if self.parser.unitsystem is None else self.parser.unitsystem
+        self.teamwin = False if self.parser.teamwin is None else bool(self.parser.teamwin)
 
         self.players = self.parser.players
         self.original_player_count = len(self.players)
@@ -82,12 +83,20 @@ class Royale:
     @property
     def game_over(self) -> Optional[int]:
         """Returns the winning team, or None if the game isn't over."""
-        if len(self.current_teams) == 1:
-            return self.current_teams[0]
-        elif len(self.current_teams) == 0:
-            return 0
+        if self.teamwin:
+            if len(self.current_teams) == 1:
+                return self.current_teams[0]
+            elif len(self.current_teams) == 0:
+                return 0
+            else:
+                return None
         else:
-            return None
+            if self.remaining == 1:
+                return self.alive_players[0]
+            elif self.remaining == 0:
+                return 0
+            else:
+                return None
 
     @property
     def stats_screen(self):
