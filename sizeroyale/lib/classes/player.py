@@ -119,7 +119,7 @@ class Player:
 
     def __lt__(self, other):
         if self.team != other.team:
-            return self.team < other.team
+            return int(self.team) < int(other.team)
         return self.name < other.name
 
     def __str__(self):
