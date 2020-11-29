@@ -13,6 +13,8 @@ import sizeroyale.data
 from sizeroyale.lib.errors import DownloadError
 from sizeroyale.lib.utils import chunkList, truncate
 
+discord_gray = (0x36, 0x39, 0x3F, 255)
+
 
 @lru_cache(50)
 def download_image(url):
@@ -44,7 +46,7 @@ def merge_images(images: list) -> Image:
     result_width = sum(widths)
     result_height = max(heights)
 
-    result = Image.new('RGB', (result_width, result_height))
+    result = Image.new('RGBA', (result_width, result_height))
 
     current_width = 0
     for i in images:
@@ -60,26 +62,32 @@ def merge_images_vertical(images: list) -> Image:
     result_width = max(widths)
     result_height = sum(heights)
 
-    result = Image.new('RGB', (result_width, result_height))
+    result = Image.new('RGBA', (result_width, result_height))
 
     current_height = 0
-    for i in images:
-        result.paste(im = i, box = (0, current_height))
+    for n, i in enumerate(images):
+        pos = 0
+        if n == len(images) - 1:
+            pos = (result_width - i.width) // 2
+        result.paste(im = i, box = (pos, current_height))
         current_height += i.size[1]
     return result
 
 
 @lru_cache(maxsize = 50)
 def create_profile_picture(system: str, url: str, name: str, team, height: Decimal, dead: bool):
-    size = (200, 200)
+    px = 200
+    size = (px, px)
 
     raw_image = download_image(url)
     height_text = SV.format(height, system)
 
-    i = crop_max_square(raw_image)
+    i = raw_image.convert("RGBA")
+    i = crop_max_square(i)
     i = i.resize(size)
     rgbimg = Image.new("RGBA", i.size)
-    rgbimg.paste(i)
+    rgbimg.paste(discord_gray, (0, 0, px, px))
+    rgbimg.paste(i, (0, 0), i)
     i = rgbimg
     d = ImageDraw.Draw(i)
     with pkg_resources.path(sizeroyale.data, "Roobert-SemiBold.otf") as p:
@@ -87,7 +95,7 @@ def create_profile_picture(system: str, url: str, name: str, team, height: Decim
     with pkg_resources.path(sizeroyale.data, "Roobert-RegularItalic.otf") as p:
         fnt_italic = ImageFont.truetype(str(p.absolute()), size = 14)
     with pkg_resources.path(sizeroyale.data, "Roobert-Regular.otf") as p:
-        fnt = ImageFont.truetype(str(p.absolute()), size = 12)
+        fnt = ImageFont.truetype(str(p.absolute()), size = 14)
     tname = name
     while fnt_semibold.getsize(name)[0] > i.width:
         tname = truncate(name, len(name) - 1)
@@ -98,9 +106,9 @@ def create_profile_picture(system: str, url: str, name: str, team, height: Decim
     d.text((10, 10),
            team, align = "center", font = fnt_italic, fill = (0, 0, 0),
            stroke_width = 2, stroke_fill = (255, 255, 255))
-    d.text(((i.width - textwidth) // 2, i.height - textheight + 2),
+    d.text(((i.width - textwidth) // 2, i.height - textheight + 3),
            height_text, align = "center", font = fnt, fill = (0, 0, 0),
-           stroke_width = 1, stroke_fill = (255, 255, 255))
+           stroke_width = 2, stroke_fill = (255, 255, 255))
 
     if dead:
         i = kill(i)
