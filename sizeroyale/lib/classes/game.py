@@ -1,11 +1,10 @@
 import logging
 import random
 from copy import copy
+
+from sizeroyale.lib import petname
 from sizeroyale.lib.img_utils import merge_images
 from sizeroyale.lib.loglevels import ROYALE
-
-import petname
-
 from sizeroyale.lib.classes.royale import Royale
 from sizeroyale.lib.errors import OutOfEventsError, OutOfPlayersError, ThisShouldNeverHappenException
 
