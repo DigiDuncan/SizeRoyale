@@ -4,4 +4,3 @@ arrow==0.15.6
 validator-collection==1.4.1
 tqdm==4.51.0
 pillow==8.0.1
-petname==2.6
