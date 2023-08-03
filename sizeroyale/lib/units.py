@@ -21,7 +21,7 @@ class UnitWrapper:
             raise ValueError(f"Parsing type {t} not valid.")
         if s is None:
             raise ParseError(f"{s} is not a valid unit string.")
-        r = requests.get(f"https://nizebot.bew.by/unit/{t}/parse?s=" + quote(s))
+        r = requests.get(f"https://nizebot.slugsource.com/unit/{t}/parse?s=" + quote(s))
         if r.status_code != 200:
             raise HTTPError
         responsejson = r.json()
@@ -38,7 +38,7 @@ class UnitWrapper:
         s = str(s)
         if t not in ["SV", "WV", "TV"]:
             raise ValueError(f"Formatting type {t} not valid.")
-        r = requests.get(f"https://nizebot.bew.by/unit/{t}/format?value=" + quote(s) + "&system=" + quote(system))
+        r = requests.get(f"https://nizebot.slugsource.com/unit/{t}/format?value=" + quote(s) + "&system=" + quote(system))
         if r.status_code != 200:
             raise HTTPError
         responsejson = r.json()

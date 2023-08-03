@@ -41,7 +41,7 @@
 # They accept some formatting codes:
 
 ### Player Tags
-# * %n% denotes a player of number n. All intergers between 1 and the number of tributes specified
+# * %n% denotes a player of number n. All integers between 1 and the number of tributes specified
 # in the metadata (up to 9, see below) must be present in the string, and no numbers outside that range
 # may exist.
 # * %n:>size% denotes a player larger than or equal to size. e.g.: %1>10ft%. (also available is <).
@@ -104,7 +104,7 @@ autoelim:True, minsize:1mm, maxsize:8mi, deathrate:10, arenafreq:10, unitsystem:
 "DigiDuncan"
 team:1, gender:M, height:5ft7.5in, url:https://pbs.twimg.com/profile_images/1191182660099547143/oF-LRZHl_400x400.jpg
 "Kelly"
-team:2, gender:F, height:5ft11in, url:https://pbs.twimg.com/profile_images/1270704649646100480/7zQ8hckD_400x400.jpg
+team:2, gender:F, height:5ft11in, url:https://tiermaker.com/images/avatars/solidnicc/solidnicc.jpg
 "Cool Dude"
 team:3, gender:M, height:5ft9in, url:https://randomuser.me/api/portraits/men/90.jpg
 "Interesting Chick"

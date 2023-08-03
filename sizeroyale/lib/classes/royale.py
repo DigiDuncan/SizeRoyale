@@ -92,7 +92,8 @@ class Royale:
                 return None
         else:
             if self.remaining == 1:
-                return self.alive_players[0]
+                player = next(i for i in self.alive_players.items())
+                return player
             elif self.remaining == 0:
                 return 0
             else:
@@ -164,10 +165,10 @@ class Royale:
             eventimage = merge_images([self.players[p].image for p in players])
 
         return {
-            "text":    eventtext,
-            "image":   eventimage,
+            "text": eventtext,
+            "image": eventimage,
             "players": players,
-            "deaths":  deaths
+            "deaths": deaths
         }
 
     def __str__(self):
