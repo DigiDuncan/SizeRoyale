@@ -16,17 +16,19 @@ logger.addHandler(dfhandler)
 
 
 def main():
-    logger.info("Welcome to the poopview!")
-    game = Game(Path(__file__).parent.parent / "royale-spec.txt")
-    logger.info(game)
+    p = input("Input a Royale Spec file path, or hit [ENTER] for the default path.")
+    if not p:
+        p = Path(__file__).parent.parent / "royale-spec.txt"
+    else:
+        p = Path(p)
+    game = Game(p)
+    # logger.info(game)
     logger.log(ROYALE, f"seed = {game.seed}")
     print(game.royale.current_players)
     game.royale.stats_screen.show()
 
     while game.game_over is None:
         game.next()
-
-    logger.info("Your poop has been viewed.")
 
 
 if __name__ == "__main__":
