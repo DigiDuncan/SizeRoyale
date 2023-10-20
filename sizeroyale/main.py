@@ -6,6 +6,8 @@ from digiformatter import logger as digilogger
 from sizeroyale.lib.classes.game import Game
 from sizeroyale.lib.loglevels import ROYALE
 
+from arcade import Window
+
 # Logging stuff.
 logging.basicConfig(level=logging.INFO)
 dfhandler = digilogger.DigiFormatterHandler()
@@ -15,7 +17,7 @@ logger.propagate = False
 logger.addHandler(dfhandler)
 
 
-def main():
+def console_main():
     p = input("Input a Royale Spec file path, or hit [ENTER] for the default path.")
     if not p:
         p = Path(__file__).parent.parent / "royale-spec.txt"
@@ -29,6 +31,13 @@ def main():
 
     while game.game_over is None:
         game.next()
+        input()
+
+class RoyaleWindow(Window):
+    pass
+
+def main():
+    console_main()
 
 
 if __name__ == "__main__":

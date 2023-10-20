@@ -1,4 +1,5 @@
 from typing import Union
+import logging
 import requests
 from decimal import Decimal
 from urllib.parse import quote
@@ -8,6 +9,7 @@ from requests.models import HTTPError
 from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
 
+logger = logging.getLogger("sizeroyale")
 
 class UnitWrapper:
     def __init__(self, unit):
@@ -21,7 +23,11 @@ class UnitWrapper:
             raise ValueError(f"Parsing type {t} not valid.")
         if s is None:
             raise ParseError(f"{s} is not a valid unit string.")
-        r = requests.get(f"https://nizebot.slugsource.com/unit/{t}/parse?s=" + quote(s))
+        try:
+            r = requests.get(f"https://sizebot.digiduncan.com/unit/{t}/parse?s=" + quote(s))
+        except requests.exceptions.SSLError as e:
+            logger.error("SSL Error: The SSL certificate has expired for Sizebot API.")
+            raise e
         if r.status_code != 200:
             raise HTTPError
         responsejson = r.json()
@@ -38,7 +44,11 @@ class UnitWrapper:
         s = str(s)
         if t not in ["SV", "WV", "TV"]:
             raise ValueError(f"Formatting type {t} not valid.")
-        r = requests.get(f"https://nizebot.slugsource.com/unit/{t}/format?value=" + quote(s) + "&system=" + quote(system))
+        try:
+            r = requests.get(f"https://sizebot.digiduncan.com/unit/{t}/format?value=" + quote(s) + "&system=" + quote(system))
+        except requests.exceptions.SSLError as e: 
+            logger.error("SSL Error: The SSL certificate has expired for Sizebot API.")
+            raise e
         if r.status_code != 200:
             raise HTTPError
         responsejson = r.json()

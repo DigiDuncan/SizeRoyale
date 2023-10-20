@@ -97,9 +97,9 @@ def create_profile_picture(system: str, url: str, name: str, team, height: Decim
     with pkg_resources.path(sizeroyale.data, "Roobert-Regular.otf") as p:
         fnt = ImageFont.truetype(str(p.absolute()), size = 14)
     tname = name
-    while fnt_semibold.getsize(name)[0] > i.width:
+    while fnt_semibold.getlength(name) > i.width:
         tname = truncate(name, len(name) - 1)
-    textwidth, textheight = fnt_semibold.getsize(name)
+    _, _, textwidth, textheight = fnt_semibold.getbbox(name)
     d.text(((i.width - textwidth) // 2, i.height - textheight - 20),
            tname, align = "center", font = fnt_semibold, fill = (0, 0, 0),
            stroke_width = 2, stroke_fill = (255, 255, 255))

@@ -11,3 +11,5 @@
 # Visual Studio Code
 .vscode
 *.code-workspace
+
+__main__/
