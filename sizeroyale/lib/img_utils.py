@@ -26,7 +26,7 @@ def download_image(url):
 
 
 # https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
-def crop_center(pil_img: Image, crop_width, crop_height) -> Image:
+def crop_center(pil_img: Image, crop_width, crop_height) -> Image.Image:
     img_width, img_height = pil_img.size
     return pil_img.crop(((img_width - crop_width) // 2,
                          (img_height - crop_height) // 2,
@@ -35,11 +35,11 @@ def crop_center(pil_img: Image, crop_width, crop_height) -> Image:
 
 
 # https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
-def crop_max_square(pil_img: Image) -> Image:
+def crop_max_square(pil_img: Image) -> Image.Image:
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 
-def merge_images(images: list) -> Image:
+def merge_images(images: list) -> Image.Image:
     widths = [i.size[0] for i in images]
     heights = [i.size[1] for i in images]
 
@@ -55,7 +55,7 @@ def merge_images(images: list) -> Image:
     return result
 
 
-def merge_images_vertical(images: list) -> Image:
+def merge_images_vertical(images: list) -> Image.Image:
     widths = [i.size[0] for i in images]
     heights = [i.size[1] for i in images]
 
@@ -130,7 +130,7 @@ def kill(image: Image, *, gray: bool = True, x: bool = True, color = (255, 0, 0)
     return i
 
 
-def create_stats_screen(players) -> Image:
+def create_stats_screen(players) -> Image.Image:
     image_list = [p.image for p in sorted(players.values())]
     height = math.ceil(math.sqrt(len(image_list)))
 

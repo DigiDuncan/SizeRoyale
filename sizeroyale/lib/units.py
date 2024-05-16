@@ -2,6 +2,7 @@ from typing import Union
 import logging
 import requests
 from decimal import Decimal
+import urllib3
 from urllib.parse import quote
 
 from requests.models import HTTPError
@@ -10,6 +11,7 @@ from sizeroyale.lib.attrdict import AttrDict
 from sizeroyale.lib.errors import ParseError
 
 logger = logging.getLogger("sizeroyale")
+urllib3.disable_warnings()
 
 class UnitWrapper:
     def __init__(self, unit):
@@ -24,7 +26,7 @@ class UnitWrapper:
         if s is None:
             raise ParseError(f"{s} is not a valid unit string.")
         try:
-            r = requests.get(f"https://sizebot.digiduncan.com/unit/{t}/parse?s=" + quote(s))
+            r = requests.get(f"http://sizebot.digiduncan.com/unit/{t}/parse?s=" + quote(s), verify=False)
         except requests.exceptions.SSLError as e:
             logger.error("SSL Error: The SSL certificate has expired for Sizebot API.")
             raise e
@@ -45,7 +47,7 @@ class UnitWrapper:
         if t not in ["SV", "WV", "TV"]:
             raise ValueError(f"Formatting type {t} not valid.")
         try:
-            r = requests.get(f"https://sizebot.digiduncan.com/unit/{t}/format?value=" + quote(s) + "&system=" + quote(system))
+            r = requests.get(f"http://sizebot.digiduncan.com/unit/{t}/format?value=" + quote(s) + "&system=" + quote(system), verify=False)
         except requests.exceptions.SSLError as e: 
             logger.error("SSL Error: The SSL certificate has expired for Sizebot API.")
             raise e
